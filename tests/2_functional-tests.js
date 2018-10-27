@@ -32,8 +32,9 @@ suite('Functional Tests', function() {
           //fill me in too!
           assert.equal(res.body.issue_title, 'Title');
           assert.equal(res.body.issue_text, 'text');
-          assert.approximately(res.body.returnNum, 2.64172, 0.1);
-          assert.equal(res.body.returnUnit, 'gal');
+          assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
+          assert.equal(res.body.assigned_to, 'Chai and Mocha');
+          assert.equal(res.body.status_text, 'In QA');
           done();
         });
       });
