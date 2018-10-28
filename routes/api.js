@@ -16,7 +16,7 @@ const CONNECTION_STRING = process.env.DB;
 
 module.exports = function (app) {
 
-MongoClient.connect(CONNECTION_STRING, function(err, db) {
+MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
   app.route('/api/issues/:project')
 
@@ -78,7 +78,7 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
       // delete project data
     });
 
-});
+// });
   
   
 };

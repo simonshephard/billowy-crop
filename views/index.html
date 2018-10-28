@@ -76,6 +76,7 @@
             crossorigin="anonymous"></script>
     <script>
       $(function() {
+        
         $('#testForm').submit(function(e) {
           $.ajax({
             url: '/api/issues/apitest',
@@ -87,6 +88,7 @@
           });
           e.preventDefault();
         });
+        
         $('#testForm2').submit(function(e) {
           $.ajax({
             url: '/api/issues/apitest',
@@ -98,6 +100,7 @@
           });
           e.preventDefault();
         });
+        
         $('#testForm3').submit(function(e) {
           $.ajax({
             url: '/api/issues/apitest',
@@ -109,6 +112,7 @@
           });
           e.preventDefault();
         });
+        
       });
    </script>
   </body>
