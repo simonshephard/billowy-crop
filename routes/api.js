@@ -98,6 +98,7 @@ module.exports = function (app) {
           db.collection('projects')
           .insertOne(new_entry)
           .then((err, id) => {
+          // .insertOne(new_entry, (err, id) => {
             db.collection('projects')
               .find({"_id": id})
               .toArray()
