@@ -132,11 +132,11 @@ module.exports = function (app) {
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection('projects')
-        // .updateOne({_id: req.body._id}, {$set: req.body}) // gives all blanks
-        .updateOne({_id: req.body._id}, {$set: req.body})
+        // .update({_id: req.body._id}, {$set: req.body}) // gives all blanks
+        .update({_id: req.body._id}, {$set: req.body})
         .then(() => {
         db.collection('projects')
-          .find({_id: req.body._id})
+          .find({"_id": req.body._id})
           .toArray()
           .then((docs) => {
             res.json(docs)
