@@ -94,17 +94,17 @@ module.exports = function (app) {
       // {"route":"post-ok","new_entry":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_body":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_params":{"project":"apitest"},"req_query":{}}
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
-        MongoClient.connect(CONNECTION_STRING, function(err, db) {
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        db.collection('projects')
+        .insertOne(new_entry, (err, doc) => {
           db.collection('projects')
-          .insertOne(new_entry, (err, doc) => {
-            db.collection('projects')
-              .find({"_id": doc.insertedId})
-              .toArray()
-              .then((docs) => {
-                res.json(docs);
-              });
-          });
+            .find({"_id": doc.insertedId})
+            .toArray()
+            .then((docs) => {
+              res.json(docs);
+            });
         });
+      });
       // [{"_id":"5bd62f578be3581c2436a54e","issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540763478977,"updated_on":1540763478977,"open":true}]
       
     })
@@ -124,17 +124,21 @@ module.exports = function (app) {
       // {"route":"post-ok","req_body":{"_id":"a","issue_title":"b","issue_text":"","created_by":"","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
       // NOTE THAT PROPERTIES ARE EMPTY STRINGS SO NEED TO WATCH UPDATE
     
-      // db.collection('projects')
-      // .updateOne({_id: project.id}, {$set: req.body})
-      // .then(() => {
-      // db.collection('projects')
-      //   .find({_id: project.id})
-      //   .toArray()
-      //   .then((docs) => {
-      //     res.json(docs)
-      //   });
-      // });
-    })
+      // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        db.collection('projects')
+        .updateOne({_id: project.id}, {$set: req.body})
+        .then(() => {
+        db.collection('projects')
+          .find({_id: project.id})
+          .toArray()
+          .then((docs) => {
+            res.json(docs)
+          });
+        });
+      });
+
+  })
 
     .delete(function (req, res){
     // I can DELETE /api/issues/{projectname} with a _id to completely delete an issue. If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
