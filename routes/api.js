@@ -117,20 +117,25 @@ module.exports = function (app) {
       // var project = req.params.project;
       // FIRST CHECK ROUTE - LOGGING HERE AND JSON ADDED TO #jsonResult IN INDEX
       // console.log({route: "put-ok"});
-      console.log({route: "post-ok", req_body: req.body, req_params: req.params, req_query: req.query});
-      // console.log({route: "post-ok", req: req}); // NOTE seems req too big to res.json
+      console.log({route: "put-ok", req_body: req.body, req_params: req.params, req_query: req.query});
+      // console.log({route: "put-ok", req: req}); // NOTE seems req too big to res.json
       // res.json({route: "put-ok"});
-      res.json({route: "post-ok", req_body: req.body, req_params: req.params, req_query: req.query});
-      // {"route":"post-ok","req_body":{"_id":"a","issue_title":"b","issue_text":"","created_by":"","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
+      res.json({route: "put-ok", req_body: req.body, req_params: req.params, req_query: req.query});
+      // {"route":"put-ok","req_body":{"_id":"a","issue_title":"b","issue_text":"","created_by":"","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
       // NOTE THAT PROPERTIES ARE EMPTY STRINGS SO NEED TO WATCH UPDATE
-    
+      
+      var updated_entry = {};
+      for (let prop in req.body) {
+        if (prop !== "" && prop 
+      }
+      
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection('projects')
-        .updateOne({_id: req.body.id}, {$set: req.body})
+        .updateOne({_id: req.body._id}, {$set: req.body})
         .then(() => {
         db.collection('projects')
-          .find({_id: project.id})
+          .find({_id: req.body._id})
           .toArray()
           .then((docs) => {
             res.json(docs)
