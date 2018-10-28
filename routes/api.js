@@ -23,15 +23,15 @@ module.exports = function (app) {
     // I can GET /api/issues/{projectname} for an array of all issues on that specific project with all the information for each issue as was returned when posted.
     // I can filter my get request by also passing along any field and value in the query(ie. /api/issues/{project}?open=false). I can pass along as many fields/values as I want.
     .get(function (req, res){
-      // THIS WORKS WITHOUT DB
-      // res.json({result: "ok"});
+      // FIRST CHECK ROUTE - THIS WORKS WITHOUT DB
+      // res.json({route: "ok"});
     
-      // THIS ALSO WORKS WITHOUT DB
-      // res.json({result: "ok", project: req.params.project});
+      // THEN CHECK PARAMS - THIS ALSO WORKS WITHOUT DB
+      // res.json({route: "ok", project: req.params.project});
       
       // THIS ALSO WORKS WITHOUT DB
       // *https://billowy-crop.glitch.me/api/issues/newproj?open=false&new_prop=new_prop
-      // *{"result": "ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}}
+      // *{"route": "ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}}
       // var project = req.params.project;
       // var filter = req.query || {};
       // filter.issue_title = project;
@@ -60,22 +60,29 @@ module.exports = function (app) {
     // *optional assigned_to and status_text (blank for optional if no input)
     // *other created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id.
     // The object saved (and returned) will include all of those fields
-      if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
-        console.log("required ok");
-        var project = req.params.project;
-        db.collection('projects')
-        .insertOne(req.body)
-        .then(() => {
-          db.collection('projects')
-            .find({_id: project.id})
-            .toArray()
-            .then((docs) => {
-              res.json(docs);
-            });
-        });
-      } else {
-        res.json({error: 'Missing required fields'});
-      }
+    
+      // FIRST CHECK ROUTE - THIS WORKS WITHOUT DB
+      console.log("required ok");
+      res.json({route: "ok"});
+
+      // if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
+      //   console.log("required ok");
+      //   var project = req.params.project;
+      //   MongoClient.connect(CONNECTION_STRING, function(err, db) {
+      //     db.collection('projects')
+      //     .insertOne(req.body)
+      //     .then(() => {
+      //       db.collection('projects')
+      //         .find({_id: project.id})
+      //         .toArray()
+      //         .then((docs) => {
+      //           res.json(docs);
+      //         });
+      //     });
+      //   });
+      // } else {
+      //   res.json({error: 'Missing required fields'});
+      // }
     })
 
     .put(function (req, res){
