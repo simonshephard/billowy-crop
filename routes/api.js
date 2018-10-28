@@ -23,7 +23,7 @@ module.exports = function (app) {
       var project = req.params.project;
     
       // get data for project
-      // db.connection not mongoose - check other recet projects
+      // db.connection not mongoose - check other recent projects
     
 
     })
