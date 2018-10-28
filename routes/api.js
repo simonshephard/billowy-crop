@@ -39,7 +39,7 @@ module.exports = function (app) {
     
       // THIS WORKS WITH DB WITHIN FUNCTION - GIVES EMPTY DOCS ARRAY SINCE NOTHING IN DB
       // *https://billowy-crop.glitch.me/api/issues/newproj?open=false&new_prop=new_prop
-      // *{"result": "ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}, "docs": []}
+      // *{"result": "get-ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}, "docs": []}
       var project = req.params.project;
       var filter = req.query || {};
       filter.issue_title = project;
@@ -81,11 +81,12 @@ module.exports = function (app) {
       // res.json({route: "post-ok"});
       // res.json({route: "post-ok", params: req.params, body: req.body});
       // {"route":"post-ok","params":{"project":"apitest"},"body":{"issue_title":"Title","issue_text":"Text","created_by":"Created","assigned_to":"","status_text":""}}
-      // HTML FORM PREVENTS POSTING WITHOUT REQUIRED FIELDS
+      res.json({route: "post-ok", req: req});
+      // NOTE HTML FORM PREVENTS POSTING WITHOUT REQUIRED FIELDS
     
       // NOW ADD ADDITIONAL FIELDS
       // created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id
-    created_on
+      // var new_entry = req.query || {};
 
       //   MongoClient.connect(CONNECTION_STRING, function(err, db) {
       //     db.collection('projects')
