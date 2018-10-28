@@ -13,9 +13,10 @@ var MongoClient = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
 
 const CONNECTION_STRING = process.env.DB;
-MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
 module.exports = function (app) {
+
+MongoClient.connect(CONNECTION_STRING, function(err, db) {
 
   app.route('/api/issues/:project')
 
@@ -24,6 +25,14 @@ module.exports = function (app) {
     
       // get data for project
       // db.connection not mongoose - check other recent projects
+    
+          db.collection('issues').find({id: project.id}, (err, doc) => {
+                  return cb(null, doc.value);
+              }
+          );
+
+    
+    
     
 
     })
@@ -47,4 +56,7 @@ module.exports = function (app) {
       // delete project data
     });
 
+});
+  
+  
 };
