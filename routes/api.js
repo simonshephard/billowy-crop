@@ -81,7 +81,8 @@ module.exports = function (app) {
       // res.json({route: "post-ok"});
       // res.json({route: "post-ok", params: req.params, body: req.body});
       // {"route":"post-ok","params":{"project":"apitest"},"body":{"issue_title":"Title","issue_text":"Text","created_by":"Created","assigned_to":"","status_text":""}}
-      res.json({route: "post-ok", req: req});
+      console.log({route: "post-ok", req: req});
+      res.json({route: "post-ok", req: JSON.stringify(req)});
       // NOTE HTML FORM PREVENTS POSTING WITHOUT REQUIRED FIELDS
     
       // NOW ADD ADDITIONAL FIELDS
