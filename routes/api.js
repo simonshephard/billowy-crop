@@ -80,11 +80,13 @@ module.exports = function (app) {
       // console.log({route: "post-ok", params: req.params, body: req.body});
       // res.json({route: "post-ok"});
       // res.json({route: "post-ok", params: req.params, body: req.body});
-      
+      // {"route":"post-ok","params":{"project":"apitest"},"body":{"issue_title":"Title","issue_text":"Text","created_by":"Created","assigned_to":"","status_text":""}}
+      // HTML FORM PREVENTS POSTING WITHOUT REQUIRED FIELDS
     
-      // if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
-      //   console.log("required ok");
-      //   var project = req.params.project;
+      // NOW ADD ADDITIONAL FIELDS
+      // created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id
+    created_on
+
       //   MongoClient.connect(CONNECTION_STRING, function(err, db) {
       //     db.collection('projects')
       //     .insertOne(req.body)
@@ -97,9 +99,6 @@ module.exports = function (app) {
       //         });
       //     });
       //   });
-      // } else {
-      //   res.json({error: 'Missing required fields'});
-      // }
     })
 
     .put(function (req, res){
