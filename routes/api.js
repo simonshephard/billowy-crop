@@ -62,7 +62,8 @@ module.exports = function (app) {
     // The object saved (and returned) will include all of those fields
     
       // FIRST CHECK ROUTE - THIS WORKS WITHOUT DB
-      console.log("required ok");
+      // console.log("route ok");
+      // console.log({route: "ok", params: req.params, body: req.body});
       res.json({route: "ok"});
 
       // if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
