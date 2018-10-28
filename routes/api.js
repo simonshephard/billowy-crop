@@ -124,17 +124,18 @@ module.exports = function (app) {
       // {"route":"put-ok","req_body":{"_id":"a","issue_title":"b","issue_text":"","created_by":"","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
       // NOTE THAT PROPERTIES ARE EMPTY STRINGS SO NEED TO WATCH UPDATE
       
-      var updated_entry = {};
-      for (let prop in req.body) {
-        if (prop !== "" && prop !== req.body._id) {updated_entry[prop] = req.body[prop];}
-      }
+      // var updated_entry = {};
+      // for (let prop in req.body) {
+      //   if (prop !== "" && prop !== req.body._id) {updated_entry[prop] = req.body[prop];}
+      // }
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection('projects')
         // .update({_id: req.body._id}, {$set: req.body}) // gives all blanks
-        .update({_id: req.body._id}, {$set: req.body})
+        .update({"_id": req.body._id}, {$set: req.body})
         .then(() => {
+        console.log({updated: "updated-ok"});
         db.collection('projects')
           .find({"_id": req.body._id})
           .toArray()
