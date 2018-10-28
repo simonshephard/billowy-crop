@@ -31,17 +31,22 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
     })
 
     .post(function (req, res){
-      var project = req.params.project;
-      db.collection('issues')
-      .insertOne(req.body)
-      .then(() => {
-      db.collection('issues')
-        .find({_id: project.id})
-        .toArray()
-        .then((docs) => {
-          res.json(docs)
-        });
+      if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
+        var project = req.params.project;
+        db.collection('issues')
+        .insertOne(req.body)
+        .then(() => {
+          db.collection('issues')
+            .find({_id: project.id})
+            .toArray()
+            .then((docs) => {
+              res.json(docs);
+            });        
+        }
       });
+                } else {
+          res.json({error: 'Missing required fields'});
+
     })
 
     .put(function (req, res){
