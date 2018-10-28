@@ -28,7 +28,7 @@ module.exports = function (app) {
     
       // THIS ALSO WORKS WITHOUT DB
       // res.json({result: "ok", project: req.params.project});
-    
+      
       // THIS ALSO WORKS WITHOUT DB
       // *https://billowy-crop.glitch.me/api/issues/newproj?open=false&new_prop=new_prop
       // *{"result": "ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}}
@@ -37,12 +37,21 @@ module.exports = function (app) {
       // filter.issue_title = project;
       // res.json({result: "ok", filter: filter});
     
-      // db.collection('projects')
-      //   .find(filter)
-      //   .toArray()
-      //   .then((docs) => {
-      //     res.json(docs)
-      //   })
+      // NEXT TRY DB - RES OK BUT NO SAVE IN DB
+      // *https://billowy-crop.glitch.me/api/issues/newproj?open=false&new_prop=new_prop
+      // *{"result": "ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}}
+      var project = req.params.project;
+      var filter = req.query || {};
+      filter.issue_title = project;
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+       db.collection('projects')
+         .find(filter)
+         .toArray()
+         .then((docs) => {
+           res.json({result: "ok", filter: filter});
+         })
+      });
+        
     })
 
     .post(function (req, res){
