@@ -24,8 +24,10 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
     // I can GET /api/issues/{projectname} for an array of all issues on that specific project with all the information for each issue as was returned when posted.
     // I can filter my get request by also passing along any field and value in the query(ie. /api/issues/{project}?open=false). I can pass along as many fields/values as I want.
       var project = req.params.project;
+      var filter = req.query || {};
+      filter.project = project;
       db.collection('projects')
-        .find({_id: project.id})
+        .find(filter)
         .toArray()
         .then((docs) => {
           res.json(docs)
@@ -33,8 +35,11 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
     })
 
     .post(function (req, res){
-    // I can POST /api/issues/{projectname} with form data containing required issue_title, issue_text, created_by, and optional assigned_to and status_text.
-    // The object saved (and returned) will include all of those fields (blank for optional no input) and also include created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id.
+    // I can POST /api/issues/{projectname} with form data containing
+    // *required issue_title, issue_text, created_by
+    // *optional assigned_to and status_text
+    // The object saved (and returned) will include all of those fields (blank for optional no input)
+    // *other created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id.
       if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
         var project = req.params.project;
         db.collection('projects')
