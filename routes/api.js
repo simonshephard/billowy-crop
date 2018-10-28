@@ -135,13 +135,15 @@ module.exports = function (app) {
         // .update({_id: req.body._id}, {$set: req.body}) // gives all blanks
         .update({"_id": req.body._id}, {$set: req.body})
         .then(() => {
-        console.log({updated: "updated-ok"});
-        db.collection('projects')
-          .find({"_id": req.body._id})
-          .toArray()
-          .then((docs) => {
-            res.json(docs)
-          });
+          console.log({updated: "updated-ok"}); // WORKING
+          // res.json({updated: "updated-ok"}); // WORKING
+          res.json({updated: req.body}); // WORKING
+          // db.collection('projects')
+          // .find({"_id": req.body._id})
+          // .toArray()
+          // .then((docs) => {
+          //   res.json(docs)
+          // });
         });
       });
 
