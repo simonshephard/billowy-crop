@@ -93,24 +93,26 @@ module.exports = function (app) {
       // res.json({route: "post-ok", new_entry: new_entry, req_body: req.body, req_params: req.params, req_query: req.query});
       // {"route":"post-ok","new_entry":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_body":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_params":{"project":"apitest"},"req_query":{}}
       
-      // AND FINALLY SAVE TO DATABASE
+      // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
         MongoClient.connect(CONNECTION_STRING, function(err, db) {
           db.collection('projects')
-          // .insertOne(new_entry)
-          // .then((err, id) => {
-          .insertOne(new_entry, (err, id) => {
+          .insertOne(new_entry, (err, doc) => {
             db.collection('projects')
-              .find({"_id": id.id})
+              .find({"_id": doc.insertedId})
               .toArray()
               .then((docs) => {
                 res.json(docs);
               });
           });
         });
+      // [{"_id":"5bd62f578be3581c2436a54e","issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540763478977,"updated_on":1540763478977,"open":true}]
+      
     })
 
     .put(function (req, res){
-    // I can PUT /api/issues/{projectname} with a _id and any fields in the object with a value to object said object. Returned will be 'successfully updated' or 'could not update '+_id. This should always update updated_on. If no fields are sent return 'no updated field sent'.
+    // I can PUT /api/issues/{projectname} with a _id and any fields in the object with a value to object said object.
+    // Returned will be 'successfully updated' or 'could not update '+_id.
+    // This should always update updated_on. If no fields are sent return 'no updated field sent'.
       var project = req.params.project;
       // db.collection('projects')
       // .updateOne({_id: project.id}, {$set: req.body})
