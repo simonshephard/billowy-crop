@@ -48,7 +48,7 @@ module.exports = function (app) {
          .find(filter)
          .toArray()
          .then((docs) => {
-           res.json({result: "ok", filter: filter, docs: docs});
+           res.json({result: "get-ok", filter: filter, docs: docs});
          })
       });
         
@@ -86,24 +86,26 @@ module.exports = function (app) {
     
       // NOW ADD ADDITIONAL FIELDS
       // created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id
-      var new_entry = req.body || {};
+      var new_entry = req.body || {}; // NOTE this creates pointer not separate copy
       new_entry.created_on = Date.now();
       new_entry.updated_on = Date.now();
       new_entry.open = true;
-      res.json({route: "post-ok", new_entry: new_entry, req_body: req.body, req_params: req.params, req_query: req.query});
-
-      //   MongoClient.connect(CONNECTION_STRING, function(err, db) {
-      //     db.collection('projects')
-      //     .insertOne(req.body)
-      //     .then(() => {
-      //       db.collection('projects')
-      //         .find({_id: project.id})
-      //         .toArray()
-      //         .then((docs) => {
-      //           res.json(docs);
-      //         });
-      //     });
-      //   });
+      // res.json({route: "post-ok", new_entry: new_entry, req_body: req.body, req_params: req.params, req_query: req.query});
+      // {"route":"post-ok","new_entry":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_body":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_params":{"project":"apitest"},"req_query":{}}
+      
+      // AND FINALLY SAVE TO DATABASE
+        MongoClient.connect(CONNECTION_STRING, function(err, db) {
+          db.collection('projects')
+          .insertOne(new_entry)
+          .then(() => {
+            db.collection('projects')
+              .find()
+              .toArray()
+              .then((docs) => {
+                res.json(docs);
+              });
+          });
+        });
     })
 
     .put(function (req, res){
