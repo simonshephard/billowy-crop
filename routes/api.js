@@ -24,18 +24,18 @@ module.exports = function (app) {
     // I can filter my get request by also passing along any field and value in the query(ie. /api/issues/{project}?open=false). I can pass along as many fields/values as I want.
     .get(function (req, res){
       // FIRST CHECK ROUTE - THIS WORKS WITHOUT DB
-      // res.json({route: "ok"});
+      // res.json({route: "get-ok"});
     
       // THEN CHECK PARAMS - THIS ALSO WORKS WITHOUT DB
-      // res.json({route: "ok", project: req.params.project});
+      // res.json({route: "get-ok", project: req.params.project});
       
       // THIS ALSO WORKS WITHOUT DB
       // *https://billowy-crop.glitch.me/api/issues/newproj?open=false&new_prop=new_prop
-      // *{"route": "ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}}
+      // *{"route": "get-ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}}
       // var project = req.params.project;
       // var filter = req.query || {};
       // filter.issue_title = project;
-      // res.json({result: "ok", filter: filter});
+      // res.json({result: "get-ok", filter: filter});
     
       // THIS WORKS WITH DB WITHIN FUNCTION - GIVES EMPTY DOCS ARRAY SINCE NOTHING IN DB
       // *https://billowy-crop.glitch.me/api/issues/newproj?open=false&new_prop=new_prop
@@ -75,12 +75,13 @@ module.exports = function (app) {
       // e.preventDefault();
     // });
 
+      // FIRST CHECK ROUTE - LOGGING HERE AND JSON ADDED TO #jsonResult IN INDEX
+      // console.log({route: "post-ok"});
+      // console.log({route: "post-ok", params: req.params, body: req.body});
+      // res.json({route: "post-ok"});
+      // res.json({route: "post-ok", params: req.params, body: req.body});
+      
     
-      // FIRST CHECK ROUTE - THIS WORKS WITHOUT DB
-      // console.log("route ok");
-      console.log({route: "post-ok", params: req.params, body: req.body});
-      res.json({route: "ok"});
-
       // if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
       //   console.log("required ok");
       //   var project = req.params.project;
