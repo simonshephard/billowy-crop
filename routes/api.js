@@ -63,7 +63,7 @@ module.exports = function (app) {
     
       // FIRST CHECK ROUTE - THIS WORKS WITHOUT DB
       // console.log("route ok");
-      // console.log({route: "ok", params: req.params, body: req.body});
+      console.log({route: "post-ok", params: req.params, body: req.body});
       res.json({route: "ok"});
 
       // if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
@@ -89,16 +89,16 @@ module.exports = function (app) {
     .put(function (req, res){
     // I can PUT /api/issues/{projectname} with a _id and any fields in the object with a value to object said object. Returned will be 'successfully updated' or 'could not update '+_id. This should always update updated_on. If no fields are sent return 'no updated field sent'.
       var project = req.params.project;
-      db.collection('projects')
-      .updateOne({_id: project.id}, {$set: req.body})
-      .then(() => {
-      db.collection('projects')
-        .find({_id: project.id})
-        .toArray()
-        .then((docs) => {
-          res.json(docs)
-        });
-      });
+      // db.collection('projects')
+      // .updateOne({_id: project.id}, {$set: req.body})
+      // .then(() => {
+      // db.collection('projects')
+      //   .find({_id: project.id})
+      //   .toArray()
+      //   .then((docs) => {
+      //     res.json(docs)
+      //   });
+      // });
     })
 
     .delete(function (req, res){

@@ -80,7 +80,8 @@
         $('#testForm').submit(function(e) {
           $.ajax({
             url: '/api/issues/apitest',
-            type: 'post',
+            method: 'post',
+            // type: 'post',
             data: $('#testForm').serialize(),
             success: function(data) {
               $('#jsonResult').text(JSON.stringify(data));
