@@ -97,9 +97,9 @@ module.exports = function (app) {
         MongoClient.connect(CONNECTION_STRING, function(err, db) {
           db.collection('projects')
           .insertOne(new_entry)
-          .then(() => {
+          .then((err, id) => {
             db.collection('projects')
-              .find()
+              .find({"_id": id})
               .toArray()
               .then((docs) => {
                 res.json(docs);
