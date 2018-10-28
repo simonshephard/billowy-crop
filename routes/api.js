@@ -24,7 +24,7 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
     // I can GET /api/issues/{projectname} for an array of all issues on that specific project with all the information for each issue as was returned when posted.
     // I can filter my get request by also passing along any field and value in the query(ie. /api/issues/{project}?open=false). I can pass along as many fields/values as I want.
       var project = req.params.project;
-      db.collection('issues')
+      db.collection('projects')
         .find({_id: project.id})
         .toArray()
         .then((docs) => {
@@ -37,14 +37,14 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
     // The object saved (and returned) will include all of those fields (blank for optional no input) and also include created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id.
       if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
         var project = req.params.project;
-        db.collection('issues')
+        db.collection('projects')
         // (blank for optional no input) 
         // created_on(date/time)
         // updated_on(date/time)
         // open(boolean, true for open, false for closed)
         .insertOne(req.body)
         .then(() => {
-          db.collection('issues')
+          db.collection('projects')
             .find({_id: project.id})
             .toArray()
             .then((docs) => {
@@ -59,10 +59,10 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
     .put(function (req, res){
     // I can PUT /api/issues/{projectname} with a _id and any fields in the object with a value to object said object. Returned will be 'successfully updated' or 'could not update '+_id. This should always update updated_on. If no fields are sent return 'no updated field sent'.
       var project = req.params.project;
-      db.collection('issues')
+      db.collection('projects')
       .updateOne({_id: project.id}, {$set: req.body})
       .then(() => {
-      db.collection('issues')
+      db.collection('projects')
         .find({_id: project.id})
         .toArray()
         .then((docs) => {
