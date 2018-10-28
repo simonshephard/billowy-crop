@@ -126,12 +126,13 @@ module.exports = function (app) {
       
       var updated_entry = {};
       for (let prop in req.body) {
-        if (prop !== "" && prop 
+        if (prop !== "" && prop !== req.body._id) {updated_entry[prop] = req.body[prop];}
       }
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection('projects')
+        // .updateOne({_id: req.body._id}, {$set: req.body}) // gives all blanks
         .updateOne({_id: req.body._id}, {$set: req.body})
         .then(() => {
         db.collection('projects')
