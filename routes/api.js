@@ -117,10 +117,10 @@ module.exports = function (app) {
       // var project = req.params.project;
       // FIRST CHECK ROUTE - LOGGING HERE AND JSON ADDED TO #jsonResult IN INDEX
       // console.log({route: "put-ok"});
-      console.log({route: "put-ok", req_body: req.body, req_params: req.params, req_query: req.query});
+      // console.log({route: "put-ok", req_body: req.body, req_params: req.params, req_query: req.query});
       // console.log({route: "put-ok", req: req}); // NOTE seems req too big to res.json
       // res.json({route: "put-ok"});
-      res.json({route: "put-ok", req_body: req.body, req_params: req.params, req_query: req.query});
+      // res.json({route: "put-ok", req_body: req.body, req_params: req.params, req_query: req.query});
       // {"route":"put-ok","req_body":{"_id":"a","issue_title":"b","issue_text":"","created_by":"","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
       // NOTE THAT PROPERTIES ARE EMPTY STRINGS SO NEED TO WATCH UPDATE
       
