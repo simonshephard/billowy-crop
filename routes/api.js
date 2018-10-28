@@ -112,8 +112,17 @@ module.exports = function (app) {
     .put(function (req, res){
     // I can PUT /api/issues/{projectname} with a _id and any fields in the object with a value to object said object.
     // Returned will be 'successfully updated' or 'could not update '+_id.
-    // This should always update updated_on. If no fields are sent return 'no updated field sent'.
-      var project = req.params.project;
+    // This should always update updated_on.
+    // If no fields are sent return 'no updated field sent'.
+      // var project = req.params.project;
+      // FIRST CHECK ROUTE - LOGGING HERE AND JSON ADDED TO #jsonResult IN INDEX
+      // console.log({route: "put-ok"});
+      console.log({route: "post-ok", req_body: req.body, req_params: req.params, req_query: req.query});
+      // console.log({route: "post-ok", req: req}); // NOTE seems req too big to res.json
+      // res.json({route: "put-ok"});
+      res.json({route: "post-ok", req_body: req.body, req_params: req.params, req_query: req.query});
+      // {"route":"post-ok","req_body":{"_id":"a","issue_title":"b","issue_text":"","created_by":"","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
+
       // db.collection('projects')
       // .updateOne({_id: project.id}, {$set: req.body})
       // .then(() => {
