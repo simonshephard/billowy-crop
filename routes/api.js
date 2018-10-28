@@ -35,12 +35,14 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
     })
 
     .post(function (req, res){
+      console.log("in post");
     // I can POST /api/issues/{projectname} with form data containing
     // *required issue_title, issue_text, created_by
     // *optional assigned_to and status_text (blank for optional if no input)
     // *other created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id.
     // The object saved (and returned) will include all of those fields
       if (req.body.issue_title && req.body.issue_text && req.body.created_by) {
+        console.log("required ok");
         var project = req.params.project;
         db.collection('projects')
         .insertOne(req.body)
