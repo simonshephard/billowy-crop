@@ -37,9 +37,9 @@ module.exports = function (app) {
       // filter.issue_title = project;
       // res.json({result: "ok", filter: filter});
     
-      // NEXT TRY DB - RES OK BUT NO SAVE IN DB
+      // THIS WORKS WITH DB WITHIN FUNCTION - GIVES EMPTY DOCS ARRAY SINCE NOTHING IN DB
       // *https://billowy-crop.glitch.me/api/issues/newproj?open=false&new_prop=new_prop
-      // *{"result": "ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}}
+      // *{"result": "ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}, "docs": []}
       var project = req.params.project;
       var filter = req.query || {};
       filter.issue_title = project;
@@ -48,14 +48,13 @@ module.exports = function (app) {
          .find(filter)
          .toArray()
          .then((docs) => {
-           res.json({result: "ok", filter: filter});
+           res.json({result: "ok", filter: filter, docs: docs});
          })
       });
         
     })
 
     .post(function (req, res){
-      console.log("in post");
     // I can POST /api/issues/{projectname} with form data containing
     // *required issue_title, issue_text, created_by
     // *optional assigned_to and status_text (blank for optional if no input)
