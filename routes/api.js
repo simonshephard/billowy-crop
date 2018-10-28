@@ -22,26 +22,31 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
 
     .get(function (req, res){
       var project = req.params.project;
-    
-      // get data for project
-      // db.connection not mongoose - check other recent projects
-    
-          db.collection('issues').find({id: project.id}, (err, doc) => {
-                  return cb(null, doc.value);
-              }
-          );
-
-    
-    
-    
-
+      db.collection('issues')
+        .find({id: project.id})
+        .toArray()
+        .then((docs) => {
+          res.json(docs)
+        })
     })
 
     .post(function (req, res){
       var project = req.params.project;
+      db.collection('issues')
+      .insertOne(req.body)
+      .then(() => {
+        db.collection('issues')
+        .find().toArray()
+        .then((docs) => {
+        res.json(docs)
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500);
+        res.json({ status: 500, error: err })
+      });
 
-      // get data from project post object
-      // create and save db data
+    });
 
     
     })
