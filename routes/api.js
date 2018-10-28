@@ -96,11 +96,11 @@ module.exports = function (app) {
       // AND FINALLY SAVE TO DATABASE
         MongoClient.connect(CONNECTION_STRING, function(err, db) {
           db.collection('projects')
-          .insertOne(new_entry)
-          .then((err, id) => {
-          // .insertOne(new_entry, (err, id) => {
+          // .insertOne(new_entry)
+          // .then((err, id) => {
+          .insertOne(new_entry, (err, id) => {
             db.collection('projects')
-              .find({"_id": id})
+              .find({"_id": id.id})
               .toArray()
               .then((docs) => {
                 res.json(docs);
