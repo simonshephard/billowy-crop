@@ -23,7 +23,7 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
     .get(function (req, res){
       var project = req.params.project;
       db.collection('issues')
-        .find({id: project.id})
+        .find({_id: project.id})
         .toArray()
         .then((docs) => {
           res.json(docs)
@@ -35,25 +35,27 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
       db.collection('issues')
       .insertOne(req.body)
       .then(() => {
-        db.collection('issues')
-        .find().toArray()
+      db.collection('issues')
+        .find({_id: project.id})
+        .toArray()
         .then((docs) => {
-        res.json(docs)
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500);
-        res.json({ status: 500, error: err })
+          res.json(docs)
+        });
       });
-
-    });
-
-    
     })
 
     .put(function (req, res){
       var project = req.params.project;
-      // amend project data and save
+      db.collection('issues')
+      .updateOne({_id: project.id}, {$set: req.body})
+      .then(() => {
+      db.collection('issues')
+        .find({_id: project.id})
+        .toArray()
+        .then((docs) => {
+          res.json(docs)
+        });
+      });
     })
 
     .delete(function (req, res){
