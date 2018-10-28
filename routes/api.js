@@ -122,7 +122,8 @@ module.exports = function (app) {
       // res.json({route: "put-ok"});
       res.json({route: "post-ok", req_body: req.body, req_params: req.params, req_query: req.query});
       // {"route":"post-ok","req_body":{"_id":"a","issue_title":"b","issue_text":"","created_by":"","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
-
+      // NOTE THAT PROPERTIES ARE EMPTY STRINGS SO NEED TO WATCH UPDATE
+    
       // db.collection('projects')
       // .updateOne({_id: project.id}, {$set: req.body})
       // .then(() => {
