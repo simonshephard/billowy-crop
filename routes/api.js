@@ -87,7 +87,10 @@ module.exports = function (app) {
       // NOW ADD ADDITIONAL FIELDS
       // created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id
       var new_entry = req.body || {};
-      new_entry.created_on = 
+      new_entry.created_on = Date.now();
+      new_entry.updated_on = Date.now();
+      new_entry.open = true;
+      res.json({route: "post-ok", new_entry: new_entry, req_body: req.body, req_params: req.params, req_query: req.query});
 
       //   MongoClient.connect(CONNECTION_STRING, function(err, db) {
       //     db.collection('projects')
