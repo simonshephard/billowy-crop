@@ -61,6 +61,21 @@ module.exports = function (app) {
     // *other created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id.
     // The object saved (and returned) will include all of those fields
     
+    // JQUERY FUNCTION IN INDEX FILE CALLING POST REQUEST
+    // $('#testForm').submit(function(e) {
+      // $.ajax({
+        // url: '/api/issues/apitest',
+        // method: 'post',
+        // // OR type: 'post', // alias for method
+        // data: $('#testForm').serialize(),
+        // success: function(data) {
+          // $('#jsonResult').text(JSON.stringify(data));
+        // }
+      // });
+      // e.preventDefault();
+    // });
+
+    
       // FIRST CHECK ROUTE - THIS WORKS WITHOUT DB
       // console.log("route ok");
       console.log({route: "post-ok", params: req.params, body: req.body});
