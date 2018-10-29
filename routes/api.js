@@ -152,6 +152,12 @@ module.exports = function (app) {
           // res.json({updated: "updated-ok"}); // WORKING
           // res.json({updated: req.body}); // WORKING BUT NOT UPDATING DB
           
+          // NOTE WHAT YOU GET BACK in doc FROM CALL BACK IS NOT OBJECT - NEED TO DO A FIND
+          res.json({docs: doc});
+          // {"docs":{"n":1,"nModified":1,"opTime":{"ts":"6617826235496005633","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617826235496005633","$clusterTime":{"clusterTime":"6617826235496005633","signature":{"hash":"o9o+C0AccJbr5gvQIEbr09+F1wo=","keyId":"6580393220394450946"}}}}
+          // ALSO NOTE YOU STILL GET BACK A doc WHEN IT DOE SNOT FUN
+          {"docs":{"n":0,"nModified":0,"opTime":{"ts":"6617827966367825921","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617827966367825921","$clusterTime":{"clusterTime":"6617827966367825921","signature":{"hash":"1cE4BoWniCs5pUvKsOvwaKi0M4k=","keyId":"6580393220394450946"}}}}
+          
           if (err) {
             console.error(err);
             res.json({update_err: err, result: 'could not update ' + req.body._id});
@@ -163,8 +169,8 @@ module.exports = function (app) {
             .then((docs) => {
               // res.json(docs)
               // 'successfully updated' or 'could not update '+_id.
-              res.json({docs: doc});
-              // res.json({docs: docs, result: 'successfully updated ' + docs[0]._id});
+              // res.json({docs: docs});
+              res.json({docs: docs, result: 'successfully updated ' + docs[0]._id});
             })
             .catch((err) => {
               console.error(err);
