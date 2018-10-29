@@ -10,6 +10,7 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
+var ObjectId = require('mongodb').ObjectID;
 
 chai.use(chaiHttp);
 
@@ -98,17 +99,41 @@ suite('Functional Tests', function() {
          chai.request(server)
           .put('/api/issues/test')
           .send({
-            "_id": ObjectId(req.body._id)
+            "_id": ObjectId(res.insertedId)
           })
-          .end(function(err, res){
-            assert.equal(res.status, 200);
-            assert.equal(res.result, 'no updated field sent');
+          .end(function(err2, res2){
+            assert.equal(res2.status, 200);
+            assert.equal(res2.result, 'no updated field sent');
             done();
            });
+         done();
         });
       });
       
       test('One field to update', function(done) {
+       chai.request(server)
+        .post('/api/issues/test')
+        .send({
+          issue_title: 'Title',
+          issue_text: 'text',
+          created_by: 'Functional Test - Every field filled in',
+          assigned_to: 'Chai and Mocha',
+          status_text: 'In QA'
+        })
+        .end(function(err, res){
+         chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            "_id": ObjectId(res.insertedId),
+            issue_title: 'Title2',
+          })
+          .end(function(err2, res2){
+            assert.equal(res2.status, 200);
+            assert.equal(res2.body.issue_title, 'Title2');
+            done();
+           });
+         done();
+        });
         
       });
       
