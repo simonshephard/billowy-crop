@@ -212,13 +212,16 @@ module.exports = function (app) {
 
           // CHECK WHAT IS RETURNED IF SUCCESS
           console.log({delete_doc_returned: doc});
-          res.json({delete_doc_returned: doc});
+          console.log({doc_result: doc.result});
+          // res.json({delete_doc_returned: doc});
+          // CONSOLE OUTPUT DIFFERENT FROM RES OUTPUT - I BELIEVE IT IS TRUNCATED IN RES!!!
           // {"doc":{"n":1,"opTime":{"ts":"6617831720169242625","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617831720169242625","$clusterTime":{"clusterTime":"6617831720169242625","signature":{"hash":"1gS0fOexWzFBfrdjeummtkowrK0=","keyId":"6580393220394450946"}}}}
-
+          // HENCE NEED TO USE doc.result.n AND NOT doc.n BELOW
+          
           if (err) {
             console.error(err);
             res.json({delete_err: err, result: 'failed: could not delete ' + req.body._id});
-          } else if (doc.n === 1) {
+          } else if (doc.result.n) {
             res.json({result: 'success: deleted ' + req.body._id});
           } else {
             res.json({other: 'no error, no delete', result: 'failed: could not delete ' + req.body._id});
