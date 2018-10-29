@@ -220,6 +220,7 @@ suite('Functional Tests', function() {
         .query({})
         .end(function(err, res){
           assert.equal(res.status, 200);
+          console.log({getresbody: res.body});
           assert.isArray(res.body);
           assert.property(res.body[0], 'issue_title');
           assert.property(res.body[0], 'issue_text');

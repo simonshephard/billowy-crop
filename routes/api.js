@@ -42,7 +42,7 @@ module.exports = function (app) {
       // *{"result": "get-ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}, "docs": []}
       var project = req.params.project;
       var filter = req.query || {};
-      filter.issue_title = project;
+      // filter.issue_title = project;
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
        db.collection(project)
          .find(filter)
