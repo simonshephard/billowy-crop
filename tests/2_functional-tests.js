@@ -96,17 +96,21 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
+        .put('/api/issues/test')
+        .send({
+          "_id": ObjectId(res.insertedId)
+        })
         .end(function(err, res){
-         chai.request(server)
-          .put('/api/issues/test')
-          .send({
-            "_id": ObjectId(res.insertedId)
-          })
-          .end(function(err2, res2){
-            assert.equal(res2.status, 200);
-            assert.equal(res2.result, 'no updated field sent');
+         // chai.request(server)
+         //  .put('/api/issues/test')
+         //  .send({
+         //    "_id": ObjectId(res.insertedId)
+         //  })
+         //  .end(function(err2, res2){
+            assert.equal(res.status, 200);
+            assert.equal(res.result, 'no updated field sent');
             done();
-           });
+           // });
          done();
         });
       });
@@ -121,21 +125,26 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
+        .put('/api/issues/test')
+        .send({
+          "_id": ObjectId(res.insertedId),
+          issue_title: 'Title2',
+        })
         .end(function(err, res){
-         chai.request(server)
-          .put('/api/issues/test')
-          .send({
-            "_id": ObjectId(res.insertedId),
-            issue_title: 'Title2',
-          })
-          .end(function(err2, res2){
+         // chai.request(server)
+         //  .put('/api/issues/test')
+         //  .send({
+         //    "_id": ObjectId(res.insertedId),
+         //    issue_title: 'Title2',
+         //  })
+         //  .end(function(err2, res2){
             //console.log({res2status: res2.status});
-            assert.equal(res2.status, 200);
-            console.log({res2body: res2.body});
-            assert.equal(res2.body.docs[0].issue_title, 'Title2');
+            assert.equal(res.status, 200);
+            console.log({resbody: res.body});
+            assert.equal(res.body.docs[0].issue_title, 'Title2');
             done();
-           });
-         done();
+         //   });
+         // done();
         });
       });
       
@@ -263,18 +272,22 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
+        .delete('/api/issues/test')
+        .send({
+          "_id": ObjectId(res.insertedId)
+        })
         .end(function(err, res){
-          chai.request(server)
-          .delete('/api/issues/test')
-          .send({
-            "_id": ObjectId(res.insertedId)
-          })
-          .end(function(err2, res2){
-            assert.equal(res2.status, 200);
-            assert.equal(res2.result, 'success: deleted ' + res.insertedId);
+          // chai.request(server)
+          // .delete('/api/issues/test')
+          // .send({
+          //   "_id": ObjectId(res.insertedId)
+          // })
+          // .end(function(err2, res2){
+            assert.equal(res.status, 200);
+            assert.equal(res.result, 'success: deleted ' + res.insertedId);
             done();
-          });
-         done();
+         //  });
+         // done();
         });
       });
       
