@@ -30,7 +30,7 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          console.log(res.body);
+          // console.log(res.body);
           // fill me in too!
           assert.equal(res.body[0].issue_title, 'Title');
           assert.equal(res.body[0].issue_text, 'text');
@@ -59,11 +59,11 @@ suite('Functional Tests', function() {
           assert.equal(res.body[0].issue_text, 'text');
           assert.equal(res.body[0].created_by, 'Functional Test - Only required fields filled in');
           assert.equal(res.body[0].assigned_to, "");
-          assert.equal(res.body.status_text, "");
-          assert.isDefined(res.body.created_on);
-          assert.isDefined(res.body.updated_on);
-          assert.equal(res.body.open, true);
-          assert.isDefined(res.body._id);
+          assert.equal(res.body[0].status_text, "");
+          assert.isDefined(res.body[0].created_on);
+          assert.isDefined(res.body[0].updated_on);
+          assert.equal(res.body[0].open, true);
+          assert.isDefined(res.body[0]._id);
           done();
         });
       });
@@ -130,7 +130,7 @@ suite('Functional Tests', function() {
           })
           .end(function(err2, res2){
             assert.equal(res2.status, 200);
-            assert.equal(res2.body.issue_title, 'Title2');
+            assert.equal(res2.body[0].issue_title, 'Title2');
             done();
            });
          done();
@@ -157,10 +157,11 @@ suite('Functional Tests', function() {
             created_by: 'Created2',
           })
           .end(function(err2, res2){
+            console.log(res2);
             assert.equal(res2.status, 200);
-            assert.equal(res2.body.issue_title, 'Title2');
-            assert.equal(res2.body.issue_text, 'Text2');
-            assert.equal(res2.body.created_by, 'Created2');
+            assert.equal(res2.body[0].issue_title, 'Title2');
+            assert.equal(res2.body[0].issue_text, 'Text2');
+            assert.equal(res2.body[0].created_by, 'Created2');
             done();
            });
          done();
@@ -239,7 +240,7 @@ suite('Functional Tests', function() {
           chai.request(server)
           .delete('/api/issues/test')
           .send({
-            "_id": ObjectId(" ")
+            "_id": ObjectId("    ")
           })
           .end(function(err2, res2){
             assert.equal(res2.status, 200);
