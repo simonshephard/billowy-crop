@@ -100,7 +100,7 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection(project)
         .insertOne(new_entry, (err, doc) => {
-          db.collection('projects')
+          db.collection(project)
             .find({"_id": doc.insertedId})
             .toArray()
             .then((docs) => {
@@ -216,8 +216,8 @@ module.exports = function (app) {
           // res.json({delete_db_connect: "ok"});
 
           // CHECK WHAT IS RETURNED IF SUCCESS
-          console.log({delete_doc_returned: doc});
-          console.log({doc_result: doc.result});
+          //console.log({delete_doc_returned: doc});
+          //console.log({doc_result: doc.result});
           // res.json({delete_doc_returned: doc});
           // CONSOLE OUTPUT DIFFERENT FROM RES OUTPUT - I BELIEVE IT IS TRUNCATED IN RES!!!
           // {"doc":{"n":1,"opTime":{"ts":"6617831720169242625","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617831720169242625","$clusterTime":{"clusterTime":"6617831720169242625","signature":{"hash":"1gS0fOexWzFBfrdjeummtkowrK0=","keyId":"6580393220394450946"}}}}
