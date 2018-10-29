@@ -158,7 +158,8 @@ module.exports = function (app) {
           .then((docs) => {
             // res.json(docs)
             // ****** 'successfully updated' or 'could not update '+_id.
-            res.json({result: 'successfully updated ' + req.body._id});
+            var resultStr = 'successfully updated ' + docs._id;
+            res.json({result: resultStr});
           });
         });
       });
