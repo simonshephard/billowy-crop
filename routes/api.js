@@ -180,6 +180,7 @@ module.exports = function (app) {
             res.json({update_err: 'no update', result: 'could not update ' + req.body._id});
             // return;
           }
+          
         });
       });
 
@@ -190,33 +191,41 @@ module.exports = function (app) {
     // If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
     
       // CHECK INITIAL ROUTE WORKS
-      console.log({delete_route: "ok"});
-      res.json({delete_route: "ok"});
-    
-      // WORKS
+      // console.log({delete_route: "ok"});
+      // res.json({delete_route: "ok"});
+
+      // CHECK REQ
       // console.log({delete_req: req});
-      // res.json({delete_req req});
+      // res.json({delete_route: "ok", req_body: req.body, req_params: req.params, req_query: req.query});
+      // {"delete_route":"ok","req_body":{"_id":"5bd5ea50e2e4bd01dd28bdef"},"req_params":{"project":"apitest"},"req_query":{}}
+    
+      // If no _id is sent return '_id error' - required by HTML!!!!
+      if (req.body._id === "") {res.json({result: 'no _id sent - _id error'});}
 
-    
-    
-    
-      // If no _id is sent return '_id error'
-      //if (numValidProperties === 0) {res.json({result: 'no updated field sent'});}
-
-    
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection('projects')
         .deleteOne({"_id": ObjectId(req.body._id)}, (err, doc) => {
           
           // CHECK DB CONNECTS AND ATTEMPTS TO DELETE
-          // console.log({db_delete: "ok"});
-          // res.json({db_delete: "ok"});
+          // console.log({delete_db: "ok"});
+          // res.json({delete_db: "ok"});
 
           // CHECK WHAT IS RETURNED IF SUCCESS
-          // console.log({db_doc: doc});
-          // res.json({db_doc: doc});
+          // console.log({delete_doc: doc});
+          // res.json({delete_doc: doc});
           // {"doc":{"n":1,"opTime":{"ts":"6617831720169242625","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617831720169242625","$clusterTime":{"clusterTime":"6617831720169242625","signature":{"hash":"1gS0fOexWzFBfrdjeummtkowrK0=","keyId":"6580393220394450946"}}}}
 
+          if (err) {
+            console.error(err);
+            res.json({delete_err: err, result: 'failed: could not delete ' + req.body._id});
+          } else if (doc.n) {
+            res.json({result: 'failed: could not delete ' + req.body._id});
+          } else {
+            res.json({update_err: 'no update', result: 'could not update ' + req.body._id});
+            // return;
+          }
+
+          
           
         });
       });
