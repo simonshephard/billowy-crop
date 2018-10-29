@@ -124,15 +124,15 @@ module.exports = function (app) {
       // {"route":"put-ok","req_body":{"_id":"a","issue_title":"b","issue_text":"","created_by":"","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
       // NOTE THAT PROPERTIES ARE EMPTY STRINGS SO NEED TO WATCH UPDATE
       
+      // SET UPDATE FIELDS
       var updated_entry = {};
       for (var property in req.body) {
         if (req.body.hasOwnProperty(property)) {
           if (req.body[property] !== "" && property !== "_id") {updated_entry[property] = req.body[property];}
         }
       }
-      // for (let prop in req.body) {
-      //   if (prop !== "" && prop !== req.body._id) {updated_entry[prop] = req.body[prop];}
-      // }
+      // **********
+      // **************NEED TO UPDATE UPDATED ON
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
@@ -142,7 +142,7 @@ module.exports = function (app) {
         // .update({"_id": ObjectId(req.body._id)}, {$set: {"issue_title": "newTitle1"}}) // WORKS AND UPDATES
         .update({"_id": ObjectId(req.body._id)}, {$set: updated_entry})
         .then(() => {
-          console.log({updated: "updated-ok"}); // WORKING
+          // console.log({updated: "updated-ok"}); // WORKING
           // res.json({updated: "updated-ok"}); // WORKING
           // res.json({updated: req.body}); // WORKING BUT NOT UPDATING DB
           db.collection('projects')
@@ -151,6 +151,7 @@ module.exports = function (app) {
           .toArray()
           .then((docs) => {
             res.json(docs)
+            // ****** 'successfully updated' or 'could not update '+_id.
           });
         });
       });
@@ -158,7 +159,8 @@ module.exports = function (app) {
   })
 
     .delete(function (req, res){
-    // I can DELETE /api/issues/{projectname} with a _id to completely delete an issue. If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
+    // I can DELETE /api/issues/{projectname} with a _id to completely delete an issue.
+    // If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
       var project = req.params.project;
       // delete project data
     });
