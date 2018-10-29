@@ -76,7 +76,7 @@ suite('Functional Tests', function() {
           issue_text: 'text',
         })
         .end(function(err, res){
-          assert.isNotDefined(res);
+          assert.isUndefined(res);
           done();
         });
         
