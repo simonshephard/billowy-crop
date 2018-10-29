@@ -189,12 +189,34 @@ module.exports = function (app) {
     // I can DELETE /api/issues/{projectname} with a _id to completely delete an issue.
     // If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
     
+      // CHECK INITIAL ROUTE WORKS
+      console.log({delete_route: "ok"});
+      res.json({delete_route: "ok"});
+    
+      // WORKS
+      // console.log({delete_req: req});
+      // res.json({delete_req req});
+
+    
+    
+    
+      // If no _id is sent return '_id error'
+      //if (numValidProperties === 0) {res.json({result: 'no updated field sent'});}
+
+    
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection('projects')
         .deleteOne({"_id": ObjectId(req.body._id)}, (err, doc) => {
-          console.log({route: "delete-ok"});
-          // console.log({route: "put-ok", req_body: req.body, req_params: req.params, req_query: req.query});
-          // console.log({route: "put-ok", req: req}); // NOTE seems req too big to res.json
+          
+          // CHECK DB CONNECTS AND ATTEMPTS TO DELETE
+          // console.log({db_delete: "ok"});
+          // res.json({db_delete: "ok"});
+
+          // CHECK WHAT IS RETURNED IF SUCCESS
+          // console.log({db_doc: doc});
+          // res.json({db_doc: doc});
+          // {"doc":{"n":1,"opTime":{"ts":"6617831720169242625","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617831720169242625","$clusterTime":{"clusterTime":"6617831720169242625","signature":{"hash":"1gS0fOexWzFBfrdjeummtkowrK0=","keyId":"6580393220394450946"}}}}
+
           
         });
       });
