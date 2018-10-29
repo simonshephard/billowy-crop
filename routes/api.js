@@ -131,13 +131,13 @@ module.exports = function (app) {
         if (req.body.hasOwnProperty(property)) {
           if (req.body[property] !== "" && property !== "_id") {
             updated_entry[property] = req.body[property];
-            // **********This should always update updated_on
+            // This should always update updated_on
             updated_entry.created_on = Date.now();
             numValidProperties++;
           }
         }
       }
-      // **********If no fields are sent return 'no updated field sent'
+      // If no fields are sent return 'no updated field sent'
       if (numValidProperties === 0) {res.json({result: 'no updated field sent'});}
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
@@ -158,8 +158,8 @@ module.exports = function (app) {
           .then((docs) => {
             // res.json(docs)
             // ****** 'successfully updated' or 'could not update '+_id.
-            var resultStr = 'successfully updated ' + docs._id;
-            res.json({result: resultStr});
+            var resultStr = 'successfully updated ' + docs["_id"];
+            res.json({docs:docs, result: resultStr});
           });
         });
       });
