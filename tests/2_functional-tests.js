@@ -129,7 +129,9 @@ suite('Functional Tests', function() {
             issue_title: 'Title2',
           })
           .end(function(err2, res2){
+            //console.log({res2status: res2.status});
             assert.equal(res2.status, 200);
+            console.log({res2body: res2.body});
             assert.equal(res2.body.docs[0].issue_title, 'Title2');
             done();
            });
