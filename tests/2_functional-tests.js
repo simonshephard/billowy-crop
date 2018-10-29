@@ -74,9 +74,8 @@ suite('Functional Tests', function() {
           issue_text: 'text',
         })
         .end(function(err, res){
-          assert.equal(res.status, 200);
-          assert.equal(res.body.error, 'Missing required fields');
-         done();
+          assert.isNotDefined(res);
+          done();
         });
         
       });
@@ -86,7 +85,27 @@ suite('Functional Tests', function() {
     suite('PUT /api/issues/{project} => text', function() {
       
       test('No body', function(done) {
-        
+       chai.request(server)
+        .post('/api/issues/test')
+        .send({
+          issue_title: 'Title',
+          issue_text: 'text',
+          created_by: 'Functional Test - Every field filled in',
+          assigned_to: 'Chai and Mocha',
+          status_text: 'In QA'
+        })
+        .end(function(err, res){
+         chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            "_id": ObjectId(req.body._id)
+          })
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.equal(res.result, 'no updated field sent');
+            done();
+           });
+        });
       });
       
       test('One field to update', function(done) {
@@ -134,6 +153,8 @@ suite('Functional Tests', function() {
     suite('DELETE /api/issues/{project} => text', function() {
       
       test('No _id', function(done) {
+        
+        
         
       });
       
