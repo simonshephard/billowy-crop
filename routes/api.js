@@ -146,28 +146,30 @@ module.exports = function (app) {
         // .update({_id: req.body._id}, {$set: req.body}) // gives all blanks
         // .update({"_id": ObjectId(req.body._id)}, {$set: req.body})
         // .update({"_id": ObjectId(req.body._id)}, {$set: {"issue_title": "newTitle1"}}) // WORKS AND UPDATES
-        .update({"_id": ObjectId(req.body._id)}, {$set: updated_entry})
-        .then(() => {
+        .update({"_id": ObjectId(req.body._id)}, {$set: updated_entry}, (err, doc) => {
+        // .then(() => {
           // console.log({updated: "updated-ok"}); // WORKING
           // res.json({updated: "updated-ok"}); // WORKING
           // res.json({updated: req.body}); // WORKING BUT NOT UPDATING DB
-          db.collection('projects')
-          // .find()
-          .find({"_id": ObjectId(req.body._id)})
-          .toArray()
-          .then((docs) => {
-            // res.json(docs)
-            // 'successfully updated' or 'could not update '+_id.
-            res.json({docs:docs, result: 'successfully updated ' + docs[0]._id});
-          })
-          .catch((err) => {
-            console.error(err);
-            res.json({find_err: err, result: 'could not update ' + req.body._id});
-          });
-        })
-        .catch((err) => {
+          
+          if (err) {
             console.error(err);
             res.json({update_err: err, result: 'could not update ' + req.body._id});
+          } else {
+            db.collection('projects')
+            // .find()
+            .find({"_id": ObjectId(req.body._id)})
+            .toArray()
+            .then((docs) => {
+              // res.json(docs)
+              // 'successfully updated' or 'could not update '+_id.
+              res.json({docs:docs, result: 'successfully updated ' + docs[0]._id});
+            })
+            .catch((err) => {
+              console.error(err);
+              res.json({find_err: err, result: 'could not update ' + req.body._id});
+            });
+          }
         });
       });
 
