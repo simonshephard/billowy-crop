@@ -83,6 +83,12 @@ module.exports = function (app) {
       // res.json({route: "post-ok", req_body: req.body, req_params: req.params, req_query: req.query});
       // {"route":"post-ok","req_body":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
       // NOTE HTML FORM PREVENTS POSTING WITHOUT REQUIRED FIELDS
+      if (req.created_on) {
+        
+      }
+      new_entry.updated_on = Date.now();
+      new_entry.open = true;
+
     
       // NOW ADD ADDITIONAL FIELDS
       // created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id

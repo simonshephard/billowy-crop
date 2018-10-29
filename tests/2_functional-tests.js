@@ -35,12 +35,10 @@ suite('Functional Tests', function() {
           assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
           assert.equal(res.body.assigned_to, 'Chai and Mocha');
           assert.equal(res.body.status_text, 'In QA');
-          assert.equal(res.body.created_on, 'In QA');
-          assert.equal(res.body.updated_on, 'In QA');
+          assert.isDefined(res.body.created_on);
+          assert.isDefined(res.body.updated_on);
           assert.equal(res.body.open, true);
-          assert.equal(res.body._id, true);
-         // (blank for optional no input)  
-         // created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id.
+          assert.isDefined(res.body._id);
           done();
         });
       });
@@ -58,8 +56,12 @@ suite('Functional Tests', function() {
           assert.equal(res.body.issue_title, 'Title');
           assert.equal(res.body.issue_text, 'text');
           assert.equal(res.body.created_by, 'Functional Test - Only required fields filled in');
-          assert.equal(res.body.assigned_to, undefined);
-          assert.equal(res.body.status_text, undefined);
+          assert.equal(res.body.assigned_to, "");
+          assert.equal(res.body.status_text, "");
+          assert.isDefined(res.body.created_on);
+          assert.isDefined(res.body.updated_on);
+          assert.equal(res.body.open, true);
+          assert.isDefined(res.body._id);
           done();
         });
       });
