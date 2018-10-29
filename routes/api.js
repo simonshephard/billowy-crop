@@ -155,10 +155,9 @@ module.exports = function (app) {
           if (err) {
             console.error(err);
             res.json({update_err: err, result: 'could not update ' + req.body._id});
-            return;
+            // return;
           } else if (doc) {
             db.collection('projects')
-            // .find()
             .find({"_id": ObjectId(req.body._id)})
             .toArray()
             .then((docs) => {
