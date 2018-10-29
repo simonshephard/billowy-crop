@@ -56,8 +56,8 @@ suite('Functional Tests', function() {
           assert.equal(res.body.docs[0].issue_title, 'Title');
           assert.equal(res.body.docs[0].issue_text, 'text');
           assert.equal(res.body.docs[0].created_by, 'Functional Test - Only required fields filled in');
-          assert.equal(res.body.docs[0].assigned_to, "");
-          assert.equal(res.body.docs[0].status_text, "");
+          assert.isUndefined(res.body.docs[0].assigned_to);
+          assert.isUndefined(res.body.docs[0].status_text);
           assert.isDefined(res.body.docs[0].created_on);
           assert.isDefined(res.body.docs[0].updated_on);
           assert.equal(res.body.docs[0].open, true);
@@ -74,7 +74,7 @@ suite('Functional Tests', function() {
           issue_text: 'text',
         })
         .end(function(err, res){
-          assert.isUndefined(res);
+          assert.isUndefined(res.body.docs);
           done();
         });
         
