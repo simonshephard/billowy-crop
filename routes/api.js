@@ -126,13 +126,19 @@ module.exports = function (app) {
       
       // SET UPDATE FIELDS
       var updated_entry = {};
+      var numValidProperties = 0;
       for (var property in req.body) {
         if (req.body.hasOwnProperty(property)) {
-          if (req.body[property] !== "" && property !== "_id") {updated_entry[property] = req.body[property];}
+          if (req.body[property] !== "" && property !== "_id") {
+            updated_entry[property] = req.body[property];
+            // **********This should always update updated_on
+            updated_entry.created_on = Date.now();
+            numValidProperties++;
+          }
         }
       }
       // **********If no fields are sent return 'no updated field sent'
-      // **********This should always update updated_on
+      if (numValidProperties === 0) {res.json({result: 'no updated field sent'});}
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
@@ -150,8 +156,9 @@ module.exports = function (app) {
           .find({"_id": ObjectId(req.body._id)})
           .toArray()
           .then((docs) => {
-            res.json(docs)
+            // res.json(docs)
             // ****** 'successfully updated' or 'could not update '+_id.
+            res.json({result: 'successfully updated ' + req.body._id});
           });
         });
       });
