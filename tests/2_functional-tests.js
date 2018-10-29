@@ -30,8 +30,6 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          //console.log(res.body);
-          // fill me in too
           assert.equal(res.body.docs[0].issue_title, 'Title');
           assert.equal(res.body.docs[0].issue_text, 'text');
           assert.equal(res.body.docs[0].created_by, 'Functional Test - Every field filled in');
@@ -97,27 +95,24 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
+        .end(function(err, res){
+          postedId = res.insertedId;
+        });
+        chai.request(server)
         .put('/api/issues/test')
         .send({
-          "_id": ObjectId(res.insertedId)
+          "_id": ObjectId(postedId)
         })
         .end(function(err, res){
-         // chai.request(server)
-         //  .put('/api/issues/test')
-         //  .send({
-         //    "_id": ObjectId(res.insertedId)
-         //  })
-         //  .end(function(err2, res2){
-            assert.equal(res.status, 200);
-            assert.equal(res.result, 'no updated field sent');
-            done();
-           // });
-         done();
+          assert.equal(res.status, 200);
+          assert.equal(res.result, 'no updated field sent');
+          done();
         });
       });
       
       test('One field to update', function(done) {
-       chai.request(server)
+        var postedId;
+        chai.request(server)
         .post('/api/issues/test')
         .send({
           issue_title: 'Title',
@@ -126,31 +121,25 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
+        .end(function(err, res){
+          postedId = res.insertedId;
+        });
+        chai.request(server)
         .put('/api/issues/test')
         .send({
-          "_id": ObjectId(res.insertedId),
+          "_id": ObjectId(postedId),
           issue_title: 'Title2',
         })
         .end(function(err, res){
-         // chai.request(server)
-         //  .put('/api/issues/test')
-         //  .send({
-         //    "_id": ObjectId(res.insertedId),
-         //    issue_title: 'Title2',
-         //  })
-         //  .end(function(err2, res2){
-            //console.log({res2status: res2.status});
-            assert.equal(res.status, 200);
-            console.log({resbody: res.body});
-            assert.equal(res.body.docs[0].issue_title, 'Title2');
-            done();
-         //   });
-         // done();
+          assert.equal(res.status, 200);
+          assert.equal(res.body.docs[0].issue_title, 'Title2');
+          done();
         });
       });
       
       test('Multiple fields to update', function(done) {
-       chai.request(server)
+        var postedId;
+        chai.request(server)
         .post('/api/issues/test')
         .send({
           issue_title: 'Title',
@@ -159,21 +148,24 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
+        .end(function(err, res){
+          postedId = res.insertedId;
+        });
+        chai.request(server)
         .put('/api/issues/test')
         .send({
-          "_id": ObjectId(res.insertedId),
+          "_id": ObjectId(postedId),
           issue_title: 'Title2',
           issue_text: 'Text2',
           created_by: 'Created2',
         })
         .end(function(err, res){
-          //console.log(res2);
-          assert.equal(res2.status, 200);
-          assert.equal(res2.docs[0].issue_title, 'Title2');
-          assert.equal(res2.docs[0].issue_text, 'Text2');
-          assert.equal(res2.body[0].created_by, 'Created2');
+          assert.equal(res.status, 200);
+          assert.equal(res.body.docs[0].issue_title, 'Title2');
+          assert.equal(res.body.docs[0].issue_text, 'Text2');
+          assert.equal(res.body.docs[0].created_by, 'Created2');
           done();
-         });
+        });
       });
       
     });
@@ -186,7 +178,6 @@ suite('Functional Tests', function() {
         .query({})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          //console.log({getresbody: res.body})
           assert.isArray(res.body.docs);
           assert.property(res.body.docs[0], 'issue_title');
           assert.property(res.body.docs[0], 'issue_text');
@@ -227,7 +218,6 @@ suite('Functional Tests', function() {
         .query({})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          //console.log({getresbody: res.body});
           assert.isArray(res.body.docs);
           assert.property(res.body.docs[0], 'issue_title');
           assert.property(res.body.docs[0], 'issue_text');
@@ -260,8 +250,8 @@ suite('Functional Tests', function() {
       });
       
       test('Valid _id', function(done) {
-       var deletedId;
-       chai.request(server)
+        var deletedId;
+        chai.request(server)
         .post('/api/issues/test')
         .send({
           issue_title: 'Title',
@@ -271,12 +261,12 @@ suite('Functional Tests', function() {
           status_text: 'In QA'
         })
         .end(function(err, res){
-         deletedId = res.insertedId;
+          deletedId = res.insertedId;
         });
         chai.request(server)
         .delete('/api/issues/test')
         .send({
-          "_id": ObjectId(deletedId)
+          "_id": deletedId
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
