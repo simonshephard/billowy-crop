@@ -235,28 +235,16 @@ suite('Functional Tests', function() {
     suite('DELETE /api/issues/{project} => text', function() {
       
       test('No _id', function(done) {
-       chai.request(server)
-        .post('/api/issues/test')
-        .send({
-          issue_title: 'Title',
-          issue_text: 'text',
-          created_by: 'Functional Test - Every field filled in',
-          assigned_to: 'Chai and Mocha',
-          status_text: 'In QA'
-        })
-        .end(function(err, res){
           chai.request(server)
           .delete('/api/issues/test')
           .send({
-            "_id": ObjectId(res.insertedId)
+            "_id": ObjectId(" ")
           })
           .end(function(err2, res2){
             assert.equal(res2.status, 200);
             assert.equal(res2.result, 'xxxx');
             done();
           });
-         done();
-        });
       });
       
       test('Valid _id', function(done) {
@@ -277,7 +265,7 @@ suite('Functional Tests', function() {
           })
           .end(function(err2, res2){
             assert.equal(res2.status, 200);
-            assert.equal(res2.result, 'xxxx');
+            assert.equal(res2.result, 'success: deleted ' + res.insertedId);
             done();
           });
          done();
