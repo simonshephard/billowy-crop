@@ -32,7 +32,7 @@ suite('Functional Tests', function() {
           assert.equal(res.status, 200);
           // console.log(res.body);
           // fill me in too!
-          assert.equal(res.body[0].issue_title, 'Title');
+          assert.equal(res.body.docs[0].issue_title, 'Title');
           assert.equal(res.body[0].issue_text, 'text');
           assert.equal(res.body[0].created_by, 'Functional Test - Every field filled in');
           assert.equal(res.body[0].assigned_to, 'Chai and Mocha');
@@ -55,7 +55,7 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.body[0].issue_title, 'Title');
+          assert.equal(res.body.docs[0].issue_title, 'Title');
           assert.equal(res.body[0].issue_text, 'text');
           assert.equal(res.body[0].created_by, 'Functional Test - Only required fields filled in');
           assert.equal(res.body[0].assigned_to, "");
@@ -130,7 +130,7 @@ suite('Functional Tests', function() {
           })
           .end(function(err2, res2){
             assert.equal(res2.status, 200);
-            assert.equal(res2.body[0].issue_title, 'Title2');
+            assert.equal(res2.docs[0].issue_title, 'Title2');
             done();
            });
          done();
@@ -159,8 +159,8 @@ suite('Functional Tests', function() {
           .end(function(err2, res2){
             console.log(res2);
             assert.equal(res2.status, 200);
-            assert.equal(res2.body[0].issue_title, 'Title2');
-            assert.equal(res2.body[0].issue_text, 'Text2');
+            assert.equal(res2.body.docs[0].issue_title, 'Title2');
+            assert.equal(res2.docs[0].issue_text, 'Text2');
             assert.equal(res2.body[0].created_by, 'Created2');
             done();
            });
@@ -178,8 +178,8 @@ suite('Functional Tests', function() {
         .query({})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.isArray(res.docs.body);
-          assert.property(res.body[0], 'issue_title');
+          assert.isArray(res.body.docs);
+          assert.property(res.body.docs[0], 'issue_title');
           assert.property(res.body[0], 'issue_text');
           assert.property(res.body[0], 'created_on');
           assert.property(res.body[0], 'updated_on');
@@ -198,7 +198,7 @@ suite('Functional Tests', function() {
         .query({})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.isArray(res.body);
+          assert.isArray(res.body.docs);
           assert.property(res.body[0], 'issue_title');
           assert.property(res.body[0], 'issue_text');
           assert.property(res.body[0], 'created_on');
