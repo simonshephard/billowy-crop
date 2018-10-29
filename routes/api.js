@@ -207,35 +207,28 @@ module.exports = function (app) {
         .deleteOne({"_id": ObjectId(req.body._id)}, (err, doc) => {
           
           // CHECK DB CONNECTS AND ATTEMPTS TO DELETE
-          // console.log({delete_db: "ok"});
-          // res.json({delete_db: "ok"});
+          // console.log({delete_db_connect: "ok"});
+          // res.json({delete_db_connect: "ok"});
 
           // CHECK WHAT IS RETURNED IF SUCCESS
-          // console.log({delete_doc: doc});
-          // res.json({delete_doc: doc});
+          console.log({delete_doc_returned: doc});
+          res.json({delete_doc_returned: doc});
           // {"doc":{"n":1,"opTime":{"ts":"6617831720169242625","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617831720169242625","$clusterTime":{"clusterTime":"6617831720169242625","signature":{"hash":"1gS0fOexWzFBfrdjeummtkowrK0=","keyId":"6580393220394450946"}}}}
 
           if (err) {
             console.error(err);
             res.json({delete_err: err, result: 'failed: could not delete ' + req.body._id});
-          } else if (doc.n) {
-            res.json({result: 'failed: could not delete ' + req.body._id});
+          } else if (doc.n === 1) {
+            res.json({result: 'success: deleted ' + req.body._id});
           } else {
-            res.json({update_err: 'no update', result: 'could not update ' + req.body._id});
-            // return;
+            res.json({other: 'no error, no delete', result: 'failed: could not delete ' + req.body._id});
           }
-
-          
           
         });
       });
-
-    
     
     
     });
-
-// });
   
   
 };
