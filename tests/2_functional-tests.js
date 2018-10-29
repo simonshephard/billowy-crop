@@ -30,17 +30,17 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          console.log(res.body);
+          //console.log(res.body);
           // fill me in too
           assert.equal(res.body.docs[0].issue_title, 'Title');
-          assert.equal(res.body[0].issue_text, 'text');
-          assert.equal(res.body[0].created_by, 'Functional Test - Every field filled in');
-          assert.equal(res.body[0].assigned_to, 'Chai and Mocha');
-          assert.equal(res.body[0].status_text, 'In QA');
-          assert.isDefined(res.body[0].created_on);
-          assert.isDefined(res.body[0].updated_on);
-          assert.equal(res.body[0].open, true);
-          assert.isDefined(res.body[0]._id);
+          assert.equal(res.body.docs[0].issue_text, 'text');
+          assert.equal(res.body.docs[0].created_by, 'Functional Test - Every field filled in');
+          assert.equal(res.body.docs[0].assigned_to, 'Chai and Mocha');
+          assert.equal(res.body.docs[0].status_text, 'In QA');
+          assert.isDefined(res.body.docs[0].created_on);
+          assert.isDefined(res.body.docs[0].updated_on);
+          assert.equal(res.body.docs[0].open, true);
+          assert.isDefined(res.body.docs[0]._id);
           done();
         });
       });
@@ -55,15 +55,15 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.body[0].issue_title, 'Title');
-          assert.equal(res.body[0].issue_text, 'text');
-          assert.equal(res.body[0].created_by, 'Functional Test - Only required fields filled in');
-          assert.equal(res.body[0].assigned_to, "");
-          assert.equal(res.body[0].status_text, "");
-          assert.isDefined(res.body[0].created_on);
-          assert.isDefined(res.body[0].updated_on);
-          assert.equal(res.body[0].open, true);
-          assert.isDefined(res.body[0]._id);
+          assert.equal(res.body.docs[0].issue_title, 'Title');
+          assert.equal(res.body.docs[0].issue_text, 'text');
+          assert.equal(res.body.docs[0].created_by, 'Functional Test - Only required fields filled in');
+          assert.equal(res.body.docs[0].assigned_to, "");
+          assert.equal(res.body.docs[0].status_text, "");
+          assert.isDefined(res.body.docs[0].created_on);
+          assert.isDefined(res.body.docs[0].updated_on);
+          assert.equal(res.body.docs[0].open, true);
+          assert.isDefined(res.body.docs[0]._id);
           done();
         });
       });
@@ -221,17 +221,17 @@ suite('Functional Tests', function() {
         .query({})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          console.log({getresbody: res.body});
+          //console.log({getresbody: res.body});
           assert.isArray(res.body.docs);
           assert.property(res.body.docs[0], 'issue_title');
           assert.property(res.body.docs[0], 'issue_text');
           assert.property(res.body.docs[0], 'created_on');
           assert.property(res.body.docs[0], 'updated_on');
           assert.property(res.body.docs[0], 'created_by');
-          assert.property(res.body[0], 'assigned_to');
-          assert.property(res.body[0], 'open');
-          assert.property(res.body[0], 'status_text');
-          assert.property(res.body[0], '_id');
+          assert.property(res.body.docs[0], 'assigned_to');
+          assert.property(res.body.docs[0], 'open');
+          assert.property(res.body.docs[0], 'status_text');
+          assert.property(res.body.docs[0], '_id');
           done();
         });
       });
