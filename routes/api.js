@@ -157,10 +157,17 @@ module.exports = function (app) {
           .toArray()
           .then((docs) => {
             // res.json(docs)
-            // ****** 'successfully updated' or 'could not update '+_id.
-            var resultStr = 'successfully updated ' + docs["_id"];
-            res.json({docs:docs, result: resultStr});
+            // 'successfully updated' or 'could not update '+_id.
+            res.json({docs:docs, result: 'successfully updated ' + docs[0]._id});
+          })
+          .catch((err) => {
+            console.error(err);
+            res.json({find_err: err, result: 'could not update ' + req.body._id});
           });
+        })
+        .catch((err) => {
+            console.error(err);
+            res.json({update_err: err, result: 'could not update ' + req.body._id});
         });
       });
 
