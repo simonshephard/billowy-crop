@@ -153,23 +153,22 @@ module.exports = function (app) {
           // res.json({updated: req.body}); // WORKING BUT NOT UPDATING DB
           
           // NOTE WHAT YOU GET BACK in doc FROM CALL BACK IS NOT OBJECT - NEED TO DO A FIND
-          res.json({docs: doc});
+          // res.json({docs: doc});
           // {"docs":{"n":1,"nModified":1,"opTime":{"ts":"6617826235496005633","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617826235496005633","$clusterTime":{"clusterTime":"6617826235496005633","signature":{"hash":"o9o+C0AccJbr5gvQIEbr09+F1wo=","keyId":"6580393220394450946"}}}}
-          // ALSO NOTE YOU STILL GET BACK A doc WHEN IT DOE SNOT FUN
-          {"docs":{"n":0,"nModified":0,"opTime":{"ts":"6617827966367825921","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617827966367825921","$clusterTime":{"clusterTime":"6617827966367825921","signature":{"hash":"1cE4BoWniCs5pUvKsOvwaKi0M4k=","keyId":"6580393220394450946"}}}}
+          // ALSO NOTE YOU STILL GET BACK A "doc" WHEN IT DOE SNOT FIND THE THING TO UPDATE
+          // {"docs":{"n":0,"nModified":0,"opTime":{"ts":"6617827966367825921","t":5},"electionId":"7fffffff0000000000000005","ok":1,"operationTime":"6617827966367825921","$clusterTime":{"clusterTime":"6617827966367825921","signature":{"hash":"1cE4BoWniCs5pUvKsOvwaKi0M4k=","keyId":"6580393220394450946"}}}}
           
           if (err) {
             console.error(err);
             res.json({update_err: err, result: 'could not update ' + req.body._id});
             // return;
-          } else if (doc) {
+          } else if (doc.nModified) {
             db.collection('projects')
             .find({"_id": ObjectId(req.body._id)})
             .toArray()
             .then((docs) => {
-              // res.json(docs)
-              // 'successfully updated' or 'could not update '+_id.
               // res.json({docs: docs});
+              // 'successfully updated' or 'could not update '+_id.
               res.json({docs: docs, result: 'successfully updated ' + docs[0]._id});
             })
             .catch((err) => {
@@ -177,8 +176,9 @@ module.exports = function (app) {
               res.json({find_err: err, result: 'could not update ' + req.body._id});
             });
           } else {
-            res.json({update_err: 'no result', result: 'could not update ' + req.body._id});
-            return;
+            // 'successfully updated' or 'could not update '+_id.
+            res.json({update_err: 'no update', result: 'could not update ' + req.body._id});
+            // return;
           }
         });
       });
@@ -188,8 +188,20 @@ module.exports = function (app) {
     .delete(function (req, res){
     // I can DELETE /api/issues/{projectname} with a _id to completely delete an issue.
     // If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
-      var project = req.params.project;
-      // delete project data
+    
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        db.collection('projects')
+        .deleteOne({"_id": ObjectId(req.body._id)}, (err, doc) => {
+          console.log({route: "delete-ok"});
+          // console.log({route: "put-ok", req_body: req.body, req_params: req.params, req_query: req.query});
+          // console.log({route: "put-ok", req: req}); // NOTE seems req too big to res.json
+          
+        });
+      });
+
+    
+    
+    
     });
 
 // });
