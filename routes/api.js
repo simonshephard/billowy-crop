@@ -124,7 +124,12 @@ module.exports = function (app) {
       // {"route":"put-ok","req_body":{"_id":"a","issue_title":"b","issue_text":"","created_by":"","assigned_to":"","status_text":""},"req_params":{"project":"apitest"},"req_query":{}}
       // NOTE THAT PROPERTIES ARE EMPTY STRINGS SO NEED TO WATCH UPDATE
       
-      // var updated_entry = {};
+      var updated_entry = {};
+      for (var property in req.body) {
+        if (req.body.hasOwnProperty(property)) {
+          if (req.body[property] !== "" && property !== "_id") {updated_entry[property] = req.body[property];}
+        }
+      }
       // for (let prop in req.body) {
       //   if (prop !== "" && prop !== req.body._id) {updated_entry[prop] = req.body[prop];}
       // }
@@ -133,14 +138,16 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection('projects')
         // .update({_id: req.body._id}, {$set: req.body}) // gives all blanks
-        .update({"_id": req.body._id}, {$set: req.body})
+        // .update({"_id": ObjectId(req.body._id)}, {$set: req.body})
+        // .update({"_id": ObjectId(req.body._id)}, {$set: {"issue_title": "newTitle1"}}) // WORKS AND UPDATES
+        .update({"_id": ObjectId(req.body._id)}, {$set: updated_entry})
         .then(() => {
           console.log({updated: "updated-ok"}); // WORKING
           // res.json({updated: "updated-ok"}); // WORKING
           // res.json({updated: req.body}); // WORKING BUT NOT UPDATING DB
           db.collection('projects')
-          .find()
-          // .find({"_id": {req.body._id})
+          // .find()
+          .find({"_id": ObjectId(req.body._id)})
           .toArray()
           .then((docs) => {
             res.json(docs)
