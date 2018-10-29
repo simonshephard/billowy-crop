@@ -137,13 +137,14 @@ module.exports = function (app) {
         .then(() => {
           console.log({updated: "updated-ok"}); // WORKING
           // res.json({updated: "updated-ok"}); // WORKING
-          res.json({updated: req.body}); // WORKING
-          // db.collection('projects')
-          // .find({"_id": req.body._id})
-          // .toArray()
-          // .then((docs) => {
-          //   res.json(docs)
-          // });
+          // res.json({updated: req.body}); // WORKING BUT NOT UPDATING DB
+          db.collection('projects')
+          .find()
+          // .find({"_id": {req.body._id})
+          .toArray()
+          .then((docs) => {
+            res.json(docs)
+          });
         });
       });
 
