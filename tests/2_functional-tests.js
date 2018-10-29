@@ -130,7 +130,7 @@ suite('Functional Tests', function() {
           })
           .end(function(err2, res2){
             assert.equal(res2.status, 200);
-            assert.equal(res2.docs[0].issue_title, 'Title2');
+            assert.equal(res2.body.docs[0].issue_title, 'Title2');
             done();
            });
          done();
@@ -159,7 +159,7 @@ suite('Functional Tests', function() {
           .end(function(err2, res2){
             console.log(res2);
             assert.equal(res2.status, 200);
-            assert.equal(res2.body.docs[0].issue_title, 'Title2');
+            assert.equal(res2.docs[0].issue_title, 'Title2');
             assert.equal(res2.docs[0].issue_text, 'Text2');
             assert.equal(res2.body[0].created_by, 'Created2');
             done();
@@ -179,7 +179,7 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.isArray(res.body.docs);
-          assert.property(res.body.docs[0], 'issue_title');
+          assert.property(res.docs[0], 'issue_title');
           assert.property(res.body[0], 'issue_text');
           assert.property(res.body[0], 'created_on');
           assert.property(res.body[0], 'updated_on');
