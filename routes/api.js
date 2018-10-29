@@ -131,8 +131,8 @@ module.exports = function (app) {
           if (req.body[property] !== "" && property !== "_id") {updated_entry[property] = req.body[property];}
         }
       }
-      // **********
-      // **************NEED TO UPDATE UPDATED ON
+      // **********If no fields are sent return 'no updated field sent'
+      // **********This should always update updated_on
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
