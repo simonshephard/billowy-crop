@@ -44,7 +44,7 @@ module.exports = function (app) {
       var filter = req.query || {};
       filter.issue_title = project;
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
-       db.collection('projects')
+       db.collection(project)
          .find(filter)
          .toArray()
          .then((docs) => {
@@ -55,6 +55,7 @@ module.exports = function (app) {
     })
 
     .post(function (req, res){
+    var project = req.params.project;
     // I can POST /api/issues/{projectname} with form data containing
     // *required issue_title, issue_text, created_by
     // *optional assigned_to and status_text (blank for optional if no input)
@@ -96,7 +97,7 @@ module.exports = function (app) {
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
-        db.collection('projects')
+        db.collection(project)
         .insertOne(new_entry, (err, doc) => {
           db.collection('projects')
             .find({"_id": doc.insertedId})
@@ -111,6 +112,7 @@ module.exports = function (app) {
     })
 
     .put(function (req, res){
+    var project = req.params.project;
     // I can PUT /api/issues/{projectname} with a _id and any fields in the object with a value to object said object.
     // Returned will be 'successfully updated' or 'could not update '+_id.
     // This should always update updated_on.
@@ -143,7 +145,7 @@ module.exports = function (app) {
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
-        db.collection('projects')
+        db.collection(project)
         // .update({_id: req.body._id}, {$set: req.body}) // gives all blanks
         // .update({"_id": ObjectId(req.body._id)}, {$set: req.body})
         // .update({"_id": ObjectId(req.body._id)}, {$set: {"issue_title": "newTitle1"}}) // WORKS AND UPDATES
@@ -164,7 +166,7 @@ module.exports = function (app) {
             res.json({update_err: err, result: 'could not update ' + req.body._id});
             // return;
           } else if (doc.nModified) {
-            db.collection('projects')
+            db.collection(project)
             .find({"_id": ObjectId(req.body._id)})
             .toArray()
             .then((docs) => {
@@ -188,6 +190,7 @@ module.exports = function (app) {
   })
 
     .delete(function (req, res){
+    var project = req.params.project;
     // I can DELETE /api/issues/{projectname} with a _id to completely delete an issue.
     // If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
     
@@ -204,7 +207,7 @@ module.exports = function (app) {
       if (req.body._id === "") {res.json({result: 'no _id sent - _id error'});}
 
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
-        db.collection('projects')
+        db.collection(project)
         .deleteOne({"_id": ObjectId(req.body._id)}, (err, doc) => {
           
           // CHECK DB CONNECTS AND ATTEMPTS TO DELETE

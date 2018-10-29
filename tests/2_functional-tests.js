@@ -178,7 +178,7 @@ suite('Functional Tests', function() {
         .query({})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.isArray(res.body);
+          assert.isArray(res.docs.body);
           assert.property(res.body[0], 'issue_title');
           assert.property(res.body[0], 'issue_text');
           assert.property(res.body[0], 'created_on');
