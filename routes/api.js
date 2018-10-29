@@ -155,7 +155,8 @@ module.exports = function (app) {
           if (err) {
             console.error(err);
             res.json({update_err: err, result: 'could not update ' + req.body._id});
-          } else {
+            return;
+          } else if (doc) {
             db.collection('projects')
             // .find()
             .find({"_id": ObjectId(req.body._id)})
@@ -163,12 +164,16 @@ module.exports = function (app) {
             .then((docs) => {
               // res.json(docs)
               // 'successfully updated' or 'could not update '+_id.
-              res.json({docs:docs, result: 'successfully updated ' + docs[0]._id});
+              res.json({docs: doc});
+              // res.json({docs: docs, result: 'successfully updated ' + docs[0]._id});
             })
             .catch((err) => {
               console.error(err);
               res.json({find_err: err, result: 'could not update ' + req.body._id});
             });
+          } else {
+            res.json({update_err: 'no result', result: 'could not update ' + req.body._id});
+            return;
           }
         });
       });
