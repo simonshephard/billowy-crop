@@ -30,16 +30,17 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
+          console.log(res.body);
           // fill me in too!
-          assert.equal(res[0].issue_title, 'Title');
-          assert.equal(res[0].issue_text, 'text');
-          assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
-          assert.equal(res.body.assigned_to, 'Chai and Mocha');
-          assert.equal(res.body.status_text, 'In QA');
-          assert.isDefined(res.body.created_on);
-          assert.isDefined(res.body.updated_on);
-          assert.equal(res.body.open, true);
-          assert.isDefined(res.body._id);
+          assert.equal(res.body[0].issue_title, 'Title');
+          assert.equal(res.body[0].issue_text, 'text');
+          assert.equal(res.body[0].created_by, 'Functional Test - Every field filled in');
+          assert.equal(res.body[0].assigned_to, 'Chai and Mocha');
+          assert.equal(res.body[0].status_text, 'In QA');
+          assert.isDefined(res.body[0].created_on);
+          assert.isDefined(res.body[0].updated_on);
+          assert.equal(res.body[0].open, true);
+          assert.isDefined(res.body[0]._id);
           done();
         });
       });
@@ -54,10 +55,10 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.body.issue_title, 'Title');
-          assert.equal(res.body.issue_text, 'text');
-          assert.equal(res.body.created_by, 'Functional Test - Only required fields filled in');
-          assert.equal(res.body.assigned_to, "");
+          assert.equal(res.body[0].issue_title, 'Title');
+          assert.equal(res.body[0].issue_text, 'text');
+          assert.equal(res.body[0].created_by, 'Functional Test - Only required fields filled in');
+          assert.equal(res.body[0].assigned_to, "");
           assert.equal(res.body.status_text, "");
           assert.isDefined(res.body.created_on);
           assert.isDefined(res.body.updated_on);
