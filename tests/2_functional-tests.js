@@ -87,7 +87,8 @@ suite('Functional Tests', function() {
     suite('PUT /api/issues/{project} => text', function() {
       
       test('No body', function(done) {
-       chai.request(server)
+        var postedId;
+        chai.request(server)
         .post('/api/issues/test')
         .send({
           issue_title: 'Title',
@@ -158,25 +159,21 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
+        .put('/api/issues/test')
+        .send({
+          "_id": ObjectId(res.insertedId),
+          issue_title: 'Title2',
+          issue_text: 'Text2',
+          created_by: 'Created2',
+        })
         .end(function(err, res){
-         chai.request(server)
-          .put('/api/issues/test')
-          .send({
-            "_id": ObjectId(res.insertedId),
-            issue_title: 'Title2',
-            issue_text: 'Text2',
-            created_by: 'Created2',
-          })
-          .end(function(err2, res2){
-            //console.log(res2);
-            assert.equal(res2.status, 200);
-            assert.equal(res2.docs[0].issue_title, 'Title2');
-            assert.equal(res2.docs[0].issue_text, 'Text2');
-            assert.equal(res2.body[0].created_by, 'Created2');
-            done();
-           });
-         done();
-        });
+          //console.log(res2);
+          assert.equal(res2.status, 200);
+          assert.equal(res2.docs[0].issue_title, 'Title2');
+          assert.equal(res2.docs[0].issue_text, 'Text2');
+          assert.equal(res2.body[0].created_by, 'Created2');
+          done();
+         });
       });
       
     });
@@ -263,6 +260,7 @@ suite('Functional Tests', function() {
       });
       
       test('Valid _id', function(done) {
+       var deletedId;
        chai.request(server)
         .post('/api/issues/test')
         .send({
@@ -272,22 +270,18 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
+        .end(function(err, res){
+         deletedId = res.insertedId;
+        });
+        chai.request(server)
         .delete('/api/issues/test')
         .send({
-          "_id": ObjectId(res.insertedId)
+          "_id": ObjectId(deletedId)
         })
         .end(function(err, res){
-          // chai.request(server)
-          // .delete('/api/issues/test')
-          // .send({
-          //   "_id": ObjectId(res.insertedId)
-          // })
-          // .end(function(err2, res2){
-            assert.equal(res.status, 200);
-            assert.equal(res.result, 'success: deleted ' + res.insertedId);
-            done();
-         //  });
-         // done();
+          assert.equal(res.status, 200);
+          assert.equal(res.body.result, 'success: deleted ' + deletedId);
+          done();
         });
       });
       
