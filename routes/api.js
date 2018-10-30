@@ -147,8 +147,8 @@ module.exports = function (app) {
       updated_entry.updated_on = Date.now();
       //updated_entry.open = true;
       for (var prop in updated_entry) { if (!updated_entry[prop]) {delete updated_entry[prop];} }
-      // console.log({updatedEntry: updated_entry});
-      // console.log({numKeysOnPutUpdatedEntry: Object.keys(updated_entry).length});
+      console.log({updatedEntry: updated_entry});
+      console.log({numKeysOnPutUpdatedEntry: Object.keys(updated_entry).length});
       if (Object.keys(updated_entry).length === 0) {res.json({result: 'no updated field sent'});}
       updated_entry.updated_on = Date.now();
 

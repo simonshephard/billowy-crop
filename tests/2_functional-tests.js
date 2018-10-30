@@ -96,13 +96,13 @@ suite('Functional Tests', function() {
           status_text: 'In QA'
         })
         .end(function(err, res){
-          postedId = res.insertedId;
+          postedId = res.body.docs[0]._id;
         });
 
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          "_id": postedId
+          _id: postedId
         })
         .end(function(errPut, resPut){
           assert.equal(resPut.status, 200);
@@ -129,12 +129,12 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          "_id": postedId,
+          _id: postedId,
           issue_title: 'Title2'
         })
-        .end(function(err, res){
-          assert.equal(res.status, 200);
-          assert.equal(res.body.docs[0].issue_title, 'Title2');
+        .end(function(errPut, resPut){
+          assert.equal(resPut.status, 200);
+          assert.equal(resPut.body.docs[0].issue_title, 'Title2');
           done();
         });
       });
