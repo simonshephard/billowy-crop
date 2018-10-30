@@ -261,6 +261,7 @@ suite('Functional Tests', function() {
           status_text: 'In QA'
         })
         .end(function(err, res){
+          console.log({insertedID: res.insertedId});
           postedId = res.insertedId;
         });
         chai.request(server)
