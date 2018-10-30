@@ -129,7 +129,7 @@ suite('Functional Tests', function() {
           assert.equal(res.body.docs[0].issue_title, 'Title3');
           assert.equal(res.body.docs[0].issue_text, 'Text3');
           assert.equal(res.body.docs[0].created_by, 'Created3');
-          // done();
+          done();
         });
       });
       
@@ -173,7 +173,7 @@ suite('Functional Tests', function() {
           assert.property(res.body.docs[0], 'open');
           assert.property(res.body.docs[0], 'status_text');
           assert.property(res.body.docs[0], '_id');
-          // done();
+          done();
         });
       });
       
@@ -223,7 +223,7 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.equal(res.body.result, 'success: deleted ' + postedId);
-          // done();
+          done();
         });
       });
       
