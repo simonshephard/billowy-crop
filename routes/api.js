@@ -144,6 +144,8 @@ module.exports = function (app) {
       //   }
       // }
       // If no fields are sent return 'no updated field sent'
+      console.log({updatedEntry: updated_entry});
+      console.log({numKeysOnPutUpdatedEntry: Object.keys(updated_entry).length});
       if (Object.keys(updated_entry).length === 0) {res.json({result: 'no updated field sent'});}
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
