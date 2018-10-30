@@ -89,7 +89,7 @@ module.exports = function (app) {
       // NOW ADD ADDITIONAL FIELDS
       // created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id
       var new_entry = req.body || {}; // NOTE this creates pointer not separate copy
-      if (new_entry.issue_title === "" && new_entry.issue_text === "" && new_entry.created_by === "") {res.json({result: 'required not completed'});}
+      if (new_entry.issue_title === "" || new_entry.issue_text === "" || new_entry.created_by === "") {res.json({result: 'required not completed'});}
       new_entry.created_on = Date.now();
       new_entry.updated_on = Date.now();
       new_entry.open = true;
@@ -114,6 +114,7 @@ module.exports = function (app) {
 
     .put(function (req, res){
     var project = req.params.project;
+    var id = req.body._id;
     // I can PUT /api/issues/{projectname} with a _id and any fields in the object with a value to object said object.
     // Returned will be 'successfully updated' or 'could not update '+_id.
     // This should always update updated_on.
@@ -164,7 +165,7 @@ module.exports = function (app) {
           
           if (err) {
             console.error(err);
-            res.json({update_err: err, result: 'could not update ' + req.body._id});
+            res.json({update_err: err, result: 'could not update ' + id});
             // return;
           } else if (doc.nModified) {
             db.collection(project)
