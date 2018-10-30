@@ -41,7 +41,7 @@ module.exports = function (app) {
       var project = req.params.project;
       var filter = req.query || {};
       if (filter.open) {filter.open = (filter.open === "true");}
-      // filter.issue_title = project;
+
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
        db.collection(project)
          .find(filter)
@@ -186,7 +186,6 @@ module.exports = function (app) {
           if (err) {
             console.error(err);
             res.json({update_err: err, result: 'could not update ' + id});
-            // return;
           } else if (doc) {
             //updated_entry._id = req.body._id;
             const results = [updated_entry];
@@ -194,13 +193,12 @@ module.exports = function (app) {
           } else {
             // 'successfully updated' or 'could not update '+_id.
             res.json({update_err: 'no update', result: 'could not update ' + id});
-            // return;
           }
           
         });
       });
 
-  })
+    })
 
     .delete(function (req, res){
     var project = req.params.project;
