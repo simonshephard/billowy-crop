@@ -228,33 +228,14 @@ suite('Functional Tests', function() {
       });
       
       test('Valid _id', function(done) {
-        //var postedId = "0";
-        chai.request(server)
-        .post('/api/issues/test')
-        .send({
-          issue_title: 'Title',
-          issue_text: 'text',
-          created_by: 'Functional Test - Every field filled in',
-          assigned_to: 'Chai and Mocha',
-          status_text: 'In QA'
-        })
-        // .end(function(err, res){
-        //   postedId = res.body.docs[0]._id;
-        // });
-        .then((res) => {
-          const postedId = res.body.docs[0]._id;
         chai.request(server)
         .delete('/api/issues/test')
         .send({
           _id: postedId
         })
-        .end(function(errDel, resDel){
-          assert.equal(resDel.status, 200);
-          assert.equal(resDel.body.result, 'success: deleted ' + postedId);
-          done();
-        });
-        })
-        .end((del, res)=>{
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.result, 'success: deleted ' + postedId);
           done();
         });
       });
