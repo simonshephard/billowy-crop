@@ -129,7 +129,7 @@ module.exports = function (app) {
       var updated_entry = {};
       var numValidProperties = 0;
       for (var property in req.body) {
-        if (req.body.hasOwnProperty(property)) {
+        if (req.body[property]) {
           if (req.body[property] !== "" && property !== "_id") {
             updated_entry[property] = req.body[property];
             // This should always update updated_on
