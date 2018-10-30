@@ -198,7 +198,7 @@ module.exports = function (app) {
       // {"delete_route":"ok","req_body":{"_id":"5bd5ea50e2e4bd01dd28bdef"},"req_params":{"project":"apitest"},"req_query":{}}
     
       // If no _id is sent return '_id error' - required by HTML!!!!
-      if (!req.body["_id"]) {res.json({result: 'no _id sent - _id error'});}
+      if (!req.body._id) {res.json({result: 'no _id sent - _id error'});}
 
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection(project)
