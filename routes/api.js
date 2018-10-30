@@ -126,20 +126,21 @@ module.exports = function (app) {
       // NOTE THAT PROPERTIES ARE EMPTY STRINGS SO NEED TO WATCH UPDATE
       
       // SET UPDATE FIELDS
-      var updated_entry = {};
-      var numValidProperties = 0;
-      for (var property in req.body) {
-        if (req.body[property]) {
-          if (req.body[property] !== "" && property !== "_id") {
-            updated_entry[property] = req.body[property];
-            // This should always update updated_on
-            updated_entry.created_on = Date.now();
-            numValidProperties++;
-          }
-        }
-      }
+      var updated_entry = req.body;
+      delete updated_entry._id;
+      // var numValidProperties = 0;
+      // for (var property in req.body) {
+      //   if (req.body[property]) {
+      //     if (req.body[property] && property !== "_id") {
+      //       updated_entry[property] = req.body[property];
+      //       // This should always update updated_on
+      //       updated_entry.created_on = Date.now();
+      //       numValidProperties++;
+      //     }
+      //   }
+      // }
       // If no fields are sent return 'no updated field sent'
-      if (numValidProperties === 0) {res.json({result: 'no updated field sent'});}
+      if (Object.keys(updated_entry).length === 0) {res.json({result: 'no updated field sent'});}
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
