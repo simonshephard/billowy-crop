@@ -204,6 +204,8 @@ module.exports = function (app) {
 
     .delete(function (req, res){
     var project = req.params.project;
+    console.log({reqBody: req.body});
+    var id = req.body._id;
     // I can DELETE /api/issues/{projectname} with a _id to completely delete an issue.
     // If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
     
@@ -217,11 +219,12 @@ module.exports = function (app) {
       // {"delete_route":"ok","req_body":{"_id":"5bd5ea50e2e4bd01dd28bdef"},"req_params":{"project":"apitest"},"req_query":{}}
     
       // If no _id is sent return '_id error' - required by HTML!!!!
-      if (!req.body._id) {res.json({result: 'no _id sent - _id error'});}
+      console.log({id: id});
+      if (!id) {res.json({result: 'no _id sent - _id error'});}
 
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection(project)
-        .deleteOne({_id: ObjectId(req.body._id)}, (err, doc) => {
+        .deleteOne({_id: ObjectId(id)}, (err, doc) => {
           
           // CHECK DB CONNECTS AND ATTEMPTS TO DELETE
           // console.log({delete_db_connect: "ok"});
@@ -237,11 +240,11 @@ module.exports = function (app) {
           
           if (err) {
             console.error(err);
-            res.json({delete_err: err, result: 'failed: could not delete ' + req.body._id});
+            res.json({delete_err: err, result: 'failed: could not delete ' + id});
           } else if (doc.result.n) {
-            res.json({result: 'success: deleted ' + req.body._id});
+            res.json({result: 'success: deleted ' + id});
           } else {
-            res.json({other: 'no error, no delete', result: 'failed: could not delete ' + req.body._id});
+            res.json({other: 'no error, no delete', result: 'failed: could not delete ' + id});
           }
           
         });

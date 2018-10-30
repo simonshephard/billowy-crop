@@ -263,8 +263,8 @@ suite('Functional Tests', function() {
           status_text: 'In QA'
         })
         .end(function(err, res){
-          // console.log({insertedID: res.insertedId});
           postedId = res.body.docs[0]._id;
+          res.body.docs[0]._id
         });
         chai.request(server)
         .delete('/api/issues/test')
