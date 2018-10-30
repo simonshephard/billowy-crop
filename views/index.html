@@ -80,7 +80,7 @@
         
         $('#testForm').submit(function(e) {
           $.ajax({
-            url: '/api/issues/apitest',
+            url: '/api/issues/test',
             method: 'post',
             // type: 'post',
             data: $('#testForm').serialize(),
@@ -93,7 +93,7 @@
         
         $('#testForm2').submit(function(e) {
           $.ajax({
-            url: '/api/issues/apitest',
+            url: '/api/issues/test',
             type: 'put',
             data: $('#testForm2').serialize(),
             success: function(data) {
@@ -105,7 +105,7 @@
         
         $('#testForm3').submit(function(e) {
           $.ajax({
-            url: '/api/issues/apitest',
+            url: '/api/issues/test',
             type: 'delete',
             data: $('#testForm3').serialize(),
             success: function(data) {

@@ -101,6 +101,7 @@ suite('Functional Tests', function() {
       });
       
       test('One field to update', function(done) {
+      //{"docs":[{"issue_title":"abc","updated_on":1540933692528}],"result":"successfully updated 5bd8c79a56820d1f7f73dfcf"}
         chai.request(server)
         .put('/api/issues/test')
         .send({
