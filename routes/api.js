@@ -101,8 +101,7 @@ module.exports = function (app) {
         db.collection(project)
         .insertOne(new_entry, (err, doc) => {
           new_entry._id = doc.insertedId
-          res.json({docs: docs});
-            });
+          res.json({docs: [new_entry]});
         });
       });
       // [{"_id":"5bd62f578be3581c2436a54e","issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540763478977,"updated_on":1540763478977,"open":true}]
@@ -165,18 +164,8 @@ module.exports = function (app) {
             res.json({update_err: err, result: 'could not update ' + id});
             // return;
           } else if (doc.nModified) {
-            db.collection(project)
-            .find({"_id": ObjectId(req.body._id)})
-            .toArray()
-            .then((docs) => {
-              // res.json({docs: docs});
-              // 'successfully updated' or 'could not update '+_id.
-              res.json({docs: docs, result: 'successfully updated ' + docs[0]._id});
-            })
-            .catch((err) => {
-              console.error(err);
-              res.json({find_err: err, result: 'could not update ' + req.body._id});
-            });
+            updated_entry._id = req.body._id;
+            res.json({docs: [updated_entry], result: 'successfully updated ' + updated_entry._id});
           } else {
             // 'successfully updated' or 'could not update '+_id.
             res.json({update_err: 'no update', result: 'could not update ' + req.body._id});
