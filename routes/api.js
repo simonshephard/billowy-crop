@@ -188,12 +188,12 @@ module.exports = function (app) {
             res.json({update_err: err, result: 'could not update ' + id});
             // return;
           } else if (doc) {
-            updated_entry._id = req.body._id;
-            const docs = [updated_entry];
-            res.json({docs: docs, result: 'successfully updated ' + id});
+            //updated_entry._id = req.body._id;
+            const results = [updated_entry];
+            res.send({docs: results, result: 'successfully updated ' + id});
           } else {
             // 'successfully updated' or 'could not update '+_id.
-            res.json({update_err: 'no update', result: 'could not update ' + req.body._id});
+            res.json({update_err: 'no update', result: 'could not update ' + id});
             // return;
           }
           

@@ -156,7 +156,7 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          "_id": postedId,
+          _id: postedId,
           issue_title: 'Title2',
           issue_text: 'Text2',
           created_by: 'Created2',
@@ -264,7 +264,7 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           // console.log({insertedID: res.insertedId});
-          postedId = res.insertedId;
+          postedId = res.body.docs[0]._id;
         });
         chai.request(server)
         .delete('/api/issues/test')
