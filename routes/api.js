@@ -106,12 +106,13 @@ module.exports = function (app) {
         .insertOne(new_entry, (err, doc) => {
           // console.log({_id: doc.insertedId});
           new_entry._id = doc.insertedId
-          console.log({newEntry: new_entry});
+          // console.log({newEntry: new_entry});
           
           
         // })
         // .then(() => {
           const docs = [new_entry];
+          console.log({docs: docs});
           res.json({docs: docs});
         });
       });

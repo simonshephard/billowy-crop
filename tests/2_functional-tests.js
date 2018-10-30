@@ -98,6 +98,32 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           postedId = res.insertedId;
         });
+
+        chai.request(server)
+        .put('/api/issues/test')
+        .send({
+          "_id": postedId,
+          issue_title: 'Title2'
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.docs[0].issue_title, 'Title2');
+          done();
+        });
+
+        var postedId;
+        chai.request(server)
+        .post('/api/issues/test')
+        .send({
+          issue_title: 'Title',
+          issue_text: 'text',
+          created_by: 'Functional Test - Every field filled in',
+          assigned_to: 'Chai and Mocha',
+          status_text: 'In QA'
+        })
+        .end(function(err, res){
+          postedId = res.insertedId;
+        });
         chai.request(server)
         .put('/api/issues/test')
         .send({
@@ -124,11 +150,12 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           postedId = res.insertedId;
         });
+
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          _id: postedId,
-          issue_title: 'Title2',
+          "_id": postedId,
+          issue_title: 'Title2'
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
