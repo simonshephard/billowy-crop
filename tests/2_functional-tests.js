@@ -56,8 +56,8 @@ suite('Functional Tests', function() {
           assert.equal(res.body.docs[0].issue_title, 'Title');
           assert.equal(res.body.docs[0].issue_text, 'text');
           assert.equal(res.body.docs[0].created_by, 'Functional Test - Only required fields filled in');
-          assert.isUndefined(res.body.docs[0].assigned_to);
-          assert.isUndefined(res.body.docs[0].status_text);
+          assert.equal(res.body.docs[0].assigned_to, '');
+          assert.equal(res.body.docs[0].status_text, '');
           assert.isDefined(res.body.docs[0].created_on);
           assert.isDefined(res.body.docs[0].updated_on);
           assert.equal(res.body.docs[0].open, true);
@@ -242,15 +242,15 @@ suite('Functional Tests', function() {
         .send({
           "_id": ""
         })
-        .end(function(err2, res2){
-          assert.equal(res2.status, 200);
-          assert.equal(res2.result, 'xxxx');
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.result, 'no _id sent - _id error');
           done();
         });
       });
       
       test('Valid _id', function(done) {
-        var deletedId;
+        var postedId;
         chai.request(server)
         .post('/api/issues/test')
         .send({
@@ -261,16 +261,16 @@ suite('Functional Tests', function() {
           status_text: 'In QA'
         })
         .end(function(err, res){
-          deletedId = res.insertedId;
+          postedId = res.insertedId;
         });
         chai.request(server)
         .delete('/api/issues/test')
         .send({
-          "_id": deletedId
+          "_id": postedId
         })
-        .end(function(err, res){
-          assert.equal(res.status, 200);
-          assert.equal(res.body.result, 'success: deleted ' + deletedId);
+        .end(function(errDel, resDel){
+          assert.equal(resDel.status, 200);
+          assert.equal(resDel.body.result, 'success: deleted ' + postedId);
           done();
         });
       });
