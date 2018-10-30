@@ -101,7 +101,7 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          "_id": ObjectId(postedId)
+          "_id": postedId
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
