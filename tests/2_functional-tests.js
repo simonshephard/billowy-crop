@@ -32,7 +32,7 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          //assert.equal(res.body.docs[0].issue_title, 'Title');
+          assert.equal(res.body.docs[0].issue_title, 'Title');
           assert.equal(res.body.docs[0].issue_text, 'text');
           assert.equal(res.body.docs[0].created_by, 'Functional Test - Every field filled in');
           assert.equal(res.body.docs[0].assigned_to, 'Chai and Mocha');
@@ -107,9 +107,9 @@ suite('Functional Tests', function() {
           _id: postedId,
           issue_title: 'Title2'
         })
-        .end(function(errPut, resPut){
-          assert.equal(resPut.status, 200);
-          assert.equal(resPut.body.docs[0].issue_title, 'Title2');
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.docs[0].issue_title, 'Title2');
           done();
         });
       });
