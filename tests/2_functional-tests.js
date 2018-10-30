@@ -252,7 +252,7 @@ suite('Functional Tests', function() {
       });
       
       test('Valid _id', function(done) {
-        var postedId = "0";
+        //var postedId = "0";
         chai.request(server)
         .post('/api/issues/test')
         .send({
@@ -266,9 +266,8 @@ suite('Functional Tests', function() {
         //   postedId = res.body.docs[0]._id;
         // });
         .then((res) => {
-           res.body.docs[0]._id;
-        })
-        // chai.request(server)
+          const postedId = res.body.docs[0]._id;
+        chai.request(server)
         .delete('/api/issues/test')
         .send({
           _id: postedId
@@ -276,6 +275,10 @@ suite('Functional Tests', function() {
         .end(function(errDel, resDel){
           assert.equal(resDel.status, 200);
           assert.equal(resDel.body.result, 'success: deleted ' + postedId);
+          done();
+        });
+        })
+        .end((del, res)=>{
           done();
         });
       });
