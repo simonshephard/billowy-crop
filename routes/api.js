@@ -52,10 +52,10 @@ module.exports = function (app) {
     MongoClient.connect(CONNECTION_STRING, function(err, db) {
       db.collection(project)
       .insertOne(new_entry, (err, doc) => {
-        console.log({_id: doc.insertedId});
+        //console.log({_id: doc.insertedId});
         new_entry._id = doc.insertedId
         const results = [new_entry];
-        console.log({docs: results});
+        //console.log({docs: results});
         res.json({docs: results});
       });
     });
@@ -96,7 +96,7 @@ module.exports = function (app) {
   .delete(function (req, res){
 
     var project = req.params.project;
-    console.log({reqBody: req.body});
+    // console.log({reqBody: req.body});
     var id = req.body._id;
     if (id === '') {res.json({result: 'no _id sent - _id error'});}
 
