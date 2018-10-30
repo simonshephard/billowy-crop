@@ -90,13 +90,12 @@ module.exports = function (app) {
       var new_entry = {}; // NOTE - do not copy req.body as creates a pointer not a copy
       new_entry.issue_title = req.body.issue_title;
       new_entry.issue_text = req.body.issue_text;
-      new_entry.issue_title = req.body.issue_title;      
-
+      new_entry.created_by = req.body.created_by;      
+      new_entry.assigned_to = req.body.assigned_to || '';
+      new_entry.status_text = req.body.status_text || '';
       new_entry.created_on = Date.now();
       new_entry.updated_on = Date.now();
       new_entry.open = true;
-      new_entry.assigned_to = req.body.assigned_to || '';
-      new_entry.status_text = req.body.status_text || '';
 
       // res.json({route: "post-ok", new_entry: new_entry, req_body: req.body, req_params: req.params, req_query: req.query});
       // {"route":"post-ok","new_entry":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_body":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_params":{"project":"apitest"},"req_query":{}}
@@ -105,9 +104,10 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection(project)
         .insertOne(new_entry, (err, doc) => {
-          console.log({id: doc.insertedId});
+          // console.log({id: doc.insertedId});
           new_entry._id = doc.insertedId
-          res.json({docs: [new_entry]});
+          const docs = [new_entry];
+          res.json({docs: docs});
         });
       });
       // [{"_id":"5bd62f578be3581c2436a54e","issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540763478977,"updated_on":1540763478977,"open":true}]
@@ -132,8 +132,14 @@ module.exports = function (app) {
       // NOTE THAT PROPERTIES ARE EMPTY STRINGS SO NEED TO WATCH UPDATE
       
       // SET UPDATE FIELDS
-      var updated_entry = req.body;
-      delete updated_entry._id;
+      var updated_entry = {}; // NOTE - do not copy req.body as creates a pointer not a copy
+      updated_entry.issue_title = req.body.issue_title || '';
+      updated_entry.issue_text = req.body.issue_text || '';
+      updated_entry.created_by = req.body.created_by || '';      
+      updated_entry.assigned_to = req.body.assigned_to || '';
+      updated_entry.status_text = req.body.status_text || '';
+      updated_entry.updated_on = Date.now();
+      //updated_entry.open = true;
       for (var prop in updated_entry) { if (!updated_entry[prop]) {delete updated_entry[prop];} }
       // console.log({updatedEntry: updated_entry});
       // console.log({numKeysOnPutUpdatedEntry: Object.keys(updated_entry).length});
@@ -178,7 +184,8 @@ module.exports = function (app) {
             // return;
           } else if (doc) {
             updated_entry._id = req.body._id;
-            res.json({docs: [updated_entry], result: 'successfully updated ' + updated_entry._id});
+            const docs = [updated_entry];
+            res.json({docs: docs, result: 'successfully updated ' + updated_entry._id});
           } else {
             // 'successfully updated' or 'could not update '+_id.
             res.json({update_err: 'no update', result: 'could not update ' + req.body._id});
