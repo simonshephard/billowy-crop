@@ -150,6 +150,7 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           postedId = res.insertedId;
+        });
         chai.request(server)
         .put('/api/issues/test')
         .send({
@@ -164,7 +165,6 @@ suite('Functional Tests', function() {
           assert.equal(res.body.docs[0].issue_text, 'Text2');
           assert.equal(res.body.docs[0].created_by, 'Created2');
           done();
-        });
         });
       });
       
