@@ -112,7 +112,7 @@ module.exports = function (app) {
         // })
         // .then(() => {
           const docs = [new_entry];
-          console.log({docs: docs});
+          // console.log({docs: docs});
           res.json({docs: docs});
         });
       });
