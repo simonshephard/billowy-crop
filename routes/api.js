@@ -89,7 +89,7 @@ module.exports = function (app) {
       // NOW ADD ADDITIONAL FIELDS
       // created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id
       var new_entry = req.body || {}; // NOTE this creates pointer not separate copy
-      if (new_entry.issue_title === "" || new_entry.issue_text === "" || new_entry.created_by === "") {res.json({result: 'required not completed'});}
+      if (!new_entry.issue_title || !new_entry.issue_text || !new_entry.created_by) {res.json({result: 'required not completed'});}
       new_entry.created_on = Date.now();
       new_entry.updated_on = Date.now();
       new_entry.open = true;
