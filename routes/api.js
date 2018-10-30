@@ -86,13 +86,18 @@ module.exports = function (app) {
     
       // NOW ADD ADDITIONAL FIELDS
       // created_on(date/time), updated_on(date/time), open(boolean, true for open, false for closed), and _id
-      var new_entry = req.body || {}; // NOTE this creates pointer not separate copy
-      if (!new_entry.issue_title || !new_entry.issue_text || !new_entry.created_by) {res.json({result: 'required not completed'});}
+      if (!req.body.issue_title || !req.body.issue_text || !req.body.created_by) {res.json({result: 'required not completed'});}
+      var new_entry = {}; // NOTE - do not copy req.body as creates a pointer not a copy
+      new_entry.issue_title = req.body.issue_title;
+      new_entry.issue_text = req.body.issue_text;
+      new_entry.issue_title = req.body.issue_title;      
+
       new_entry.created_on = Date.now();
       new_entry.updated_on = Date.now();
       new_entry.open = true;
       new_entry.assigned_to = req.body.assigned_to || '';
       new_entry.status_text = req.body.status_text || '';
+
       // res.json({route: "post-ok", new_entry: new_entry, req_body: req.body, req_params: req.params, req_query: req.query});
       // {"route":"post-ok","new_entry":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_body":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_params":{"project":"apitest"},"req_query":{}}
       
@@ -130,6 +135,9 @@ module.exports = function (app) {
       var updated_entry = req.body;
       delete updated_entry._id;
       for (var prop in updated_entry) { if (!updated_entry[prop]) {delete updated_entry[prop];} }
+      // console.log({updatedEntry: updated_entry});
+      // console.log({numKeysOnPutUpdatedEntry: Object.keys(updated_entry).length});
+      if (Object.keys(updated_entry).length === 0) {res.json({result: 'no updated field sent'});}
       updated_entry.updated_on = Date.now();
 
       // var numValidProperties = 0;
@@ -144,9 +152,6 @@ module.exports = function (app) {
       //   }
       // }
       // If no fields are sent return 'no updated field sent'
-      console.log({updatedEntry: updated_entry});
-      console.log({numKeysOnPutUpdatedEntry: Object.keys(updated_entry).length});
-      if (Object.keys(updated_entry).length === 0) {res.json({result: 'no updated field sent'});}
       
       // AND FINALLY SAVE TO DATABASE AND RETRIEVE SAVED
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
