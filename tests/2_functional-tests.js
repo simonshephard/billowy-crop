@@ -95,7 +95,7 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(resPut.body.result, 'no updated field sent');
+          assert.equal(res.body.result, 'no updated field sent');
           done();
         });
       });

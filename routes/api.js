@@ -104,15 +104,12 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection(project)
         .insertOne(new_entry, (err, doc) => {
-          // console.log({_id: doc.insertedId});
+          console.log({_id: doc.insertedId});
           new_entry._id = doc.insertedId
           // console.log({newEntry: new_entry});
-          
-          
-        // })
-        // .then(() => {
+
           const results = [new_entry];
-          // console.log({docs: results});
+          console.log({docs: results});
           res.json({docs: results});
         });
       });
@@ -239,7 +236,7 @@ module.exports = function (app) {
           if (err) {
             console.error(err);
             res.json({delete_err: err, result: 'failed: could not delete ' + id});
-          } else if (doc.result.n) {
+          } else if (doc) {
             res.json({result: 'success: deleted ' + id});
           } else {
             res.json({other: 'no error, no delete', result: 'failed: could not delete ' + id});
