@@ -12,11 +12,9 @@ var expect = require('chai').expect;
 var MongoClient = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
 
-const CONNECTION_STRING = process.env.DB;
+const CONNECTION_STRING = process.env.DB; // MongoClient.connect(CONNECTION_STRING, function(err, db) {
 
 module.exports = function (app) {
-
-// MongoClient.connect(CONNECTION_STRING, function(err, db) {
 
   app.route('/api/issues/:project')
 
@@ -42,7 +40,7 @@ module.exports = function (app) {
       // *{"result": "get-ok", "filter": {"open": "false", "new_prop": "new_prop", "issue_title": "newproj"}, "docs": []}
       var project = req.params.project;
       var filter = req.query || {};
-      if (filter.hasOwnProperty('open')) {filter.open = (filter.open === "true");}
+      if (filter.open) {filter.open = (filter.open === "true");}
       // filter.issue_title = project;
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
        db.collection(project)
@@ -93,6 +91,8 @@ module.exports = function (app) {
       new_entry.created_on = Date.now();
       new_entry.updated_on = Date.now();
       new_entry.open = true;
+      new_entry.assigned_to = req.body.assigned_to || '';
+      new_entry.status_text = req.body.status_text || '';
       // res.json({route: "post-ok", new_entry: new_entry, req_body: req.body, req_params: req.params, req_query: req.query});
       // {"route":"post-ok","new_entry":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_body":{"issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540756426831,"updated_on":1540756426831,"open":true},"req_params":{"project":"apitest"},"req_query":{}}
       
@@ -100,11 +100,8 @@ module.exports = function (app) {
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection(project)
         .insertOne(new_entry, (err, doc) => {
-          db.collection(project)
-            .find({"_id": doc.insertedId})
-            .toArray()
-            .then((docs) => {
-              res.json({docs: docs});
+          new_entry._id = doc.insertedId
+          res.json({docs: docs});
             });
         });
       });
