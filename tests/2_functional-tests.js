@@ -127,7 +127,7 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          "_id": postedId,
+          _id: postedId,
           issue_title: 'Title2',
         })
         .end(function(err, res){
@@ -267,7 +267,7 @@ suite('Functional Tests', function() {
         chai.request(server)
         .delete('/api/issues/test')
         .send({
-          "_id": postedId
+          _id: postedId
         })
         .end(function(errDel, resDel){
           assert.equal(resDel.status, 200);
