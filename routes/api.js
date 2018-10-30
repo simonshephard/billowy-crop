@@ -145,9 +145,9 @@ module.exports = function (app) {
       updated_entry.assigned_to = req.body.assigned_to || '';
       updated_entry.status_text = req.body.status_text || '';
       //updated_entry.open = true;
-      for (var prop in updated_entry) { if (!updated_entry[prop]) {delete updated_entry[prop];} }
-      console.log({updatedEntry: updated_entry});
-      console.log({numKeysOnPutUpdatedEntry: Object.keys(updated_entry).length});
+      for (var prop in updated_entry) { if (updated_entry[prop] === '') {delete updated_entry[prop];} }
+      //console.log({updatedEntry: updated_entry});
+      //console.log({numKeysOnPutUpdatedEntry: Object.keys(updated_entry).length});
       if (Object.keys(updated_entry).length === 0) {res.json({result: 'no updated field sent'});}
       updated_entry.updated_on = Date.now();
 
@@ -171,7 +171,7 @@ module.exports = function (app) {
         // .update({"_id": ObjectId(req.body._id)}, {$set: req.body})
         // .update({"_id": ObjectId(req.body._id)}, {$set: {"issue_title": "newTitle1"}}) // WORKS AND UPDATES
         // .update({"_id": ObjectId(req.body._id)}, {$set: updated_entry}, (err, doc) => {
-        .findAndModify({_id: ObjectId(req.body._id)},[['_id',1]], {$set: updated_entry}, {new: true}, (err,doc) => {
+        .findAndModify({_id: ObjectId(id)},[['_id',1]], {$set: updated_entry}, {new: true}, (err,doc) => {
         // .then(() => {
           // console.log({updated: "updated-ok"}); // WORKING
           // res.json({updated: "updated-ok"}); // WORKING
@@ -217,8 +217,8 @@ module.exports = function (app) {
       // {"delete_route":"ok","req_body":{"_id":"5bd5ea50e2e4bd01dd28bdef"},"req_params":{"project":"apitest"},"req_query":{}}
     
       // If no _id is sent return '_id error' - required by HTML!!!!
-      console.log({id: id});
-      if (!id) {res.json({result: 'no _id sent - _id error'});}
+      //console.log({id: id});
+      if (id === '') {res.json({result: 'no _id sent - _id error'});}
 
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection(project)

@@ -88,27 +88,13 @@ suite('Functional Tests', function() {
     suite('PUT /api/issues/{project} => text', function() {
       
       test('No body', function(done) {
-        var postedId;
-        chai.request(server)
-        .post('/api/issues/test')
-        .send({
-          issue_title: 'Title',
-          issue_text: 'text',
-          created_by: 'Functional Test - Every field filled in',
-          assigned_to: 'Chai and Mocha',
-          status_text: 'In QA'
-        })
-        .end(function(err, res){
-          postedId = res.body.docs[0]._id;
-        });
-
         chai.request(server)
         .put('/api/issues/test')
         .send({
           _id: postedId
         })
-        .end(function(errPut, resPut){
-          assert.equal(resPut.status, 200);
+        .end(function(err, res){
+          assert.equal(res.status, 200);
           assert.equal(resPut.body.result, 'no updated field sent');
           done();
         });
@@ -218,7 +204,7 @@ suite('Functional Tests', function() {
         chai.request(server)
         .delete('/api/issues/test')
         .send({
-          "_id": ""
+          _id: ""
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
