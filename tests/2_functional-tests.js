@@ -74,7 +74,7 @@ suite('Functional Tests', function() {
           issue_text: 'text',
         })
         .end(function(err, res){
-          assert.isUndefined(res.body.docs);
+          assert.equal(res.body.result, 'required not completed');
           done();
         });
         
