@@ -202,7 +202,7 @@ module.exports = function (app) {
 
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         db.collection(project)
-        .deleteOne({"_id": ObjectId(req.body._id)}, (err, doc) => {
+        .deleteOne({_id: ObjectId(req.body._id)}, (err, doc) => {
           
           // CHECK DB CONNECTS AND ATTEMPTS TO DELETE
           // console.log({delete_db_connect: "ok"});
