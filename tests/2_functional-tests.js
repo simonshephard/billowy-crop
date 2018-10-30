@@ -15,6 +15,8 @@ var ObjectId = require('mongodb').ObjectID;
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
+    
+    var postedId;
   
     suite('POST /api/issues/{project} => object with issue data', function() {
       
@@ -39,6 +41,7 @@ suite('Functional Tests', function() {
           assert.isDefined(res.body.docs[0].updated_on);
           assert.equal(res.body.docs[0].open, true);
           assert.isDefined(res.body.docs[0]._id);
+          postedId = res.body.docs[0]._id;
           done();
         });
       });
@@ -112,20 +115,6 @@ suite('Functional Tests', function() {
       });
       
       test('One field to update', function(done) {
-        var postedId;
-        chai.request(server)
-        .post('/api/issues/test')
-        .send({
-          issue_title: 'Title',
-          issue_text: 'text',
-          created_by: 'Functional Test - Every field filled in',
-          assigned_to: 'Chai and Mocha',
-          status_text: 'In QA'
-        })
-        .end(function(err, res){
-          postedId = res.body.docs[0]._id;
-        });
-
         chai.request(server)
         .put('/api/issues/test')
         .send({
@@ -140,32 +129,19 @@ suite('Functional Tests', function() {
       });
       
       test('Multiple fields to update', function(done) {
-        var postedId;
-        chai.request(server)
-        .post('/api/issues/test')
-        .send({
-          issue_title: 'Title',
-          issue_text: 'text',
-          created_by: 'Functional Test - Every field filled in',
-          assigned_to: 'Chai and Mocha',
-          status_text: 'In QA'
-        })
-        .end(function(err, res){
-          postedId = res.insertedId;
-        });
         chai.request(server)
         .put('/api/issues/test')
         .send({
           _id: postedId,
-          issue_title: 'Title2',
-          issue_text: 'Text2',
-          created_by: 'Created2',
+          issue_title: 'Title3',
+          issue_text: 'Text3',
+          created_by: 'Created3',
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.body.docs[0].issue_title, 'Title2');
-          assert.equal(res.body.docs[0].issue_text, 'Text2');
-          assert.equal(res.body.docs[0].created_by, 'Created2');
+          assert.equal(res.body.docs[0].issue_title, 'Title3');
+          assert.equal(res.body.docs[0].issue_text, 'Text3');
+          assert.equal(res.body.docs[0].created_by, 'Created3');
           done();
         });
       });
