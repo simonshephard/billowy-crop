@@ -105,7 +105,7 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.result, 'no updated field sent');
+          assert.equal(res.body.result, 'no updated field sent');
           done();
         });
       });
@@ -150,11 +150,10 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           postedId = res.insertedId;
-        });
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          "_id": ObjectId(postedId),
+          "_id": postedId,
           issue_title: 'Title2',
           issue_text: 'Text2',
           created_by: 'Created2',
@@ -165,6 +164,7 @@ suite('Functional Tests', function() {
           assert.equal(res.body.docs[0].issue_text, 'Text2');
           assert.equal(res.body.docs[0].created_by, 'Created2');
           done();
+        });
         });
       });
       
@@ -240,7 +240,7 @@ suite('Functional Tests', function() {
           chai.request(server)
           .delete('/api/issues/test')
           .send({
-            "_id": ObjectId("    ")
+            "_id": ""
           })
           .end(function(err2, res2){
             assert.equal(res2.status, 200);
