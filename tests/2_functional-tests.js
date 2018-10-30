@@ -237,16 +237,16 @@ suite('Functional Tests', function() {
     suite('DELETE /api/issues/{project} => text', function() {
       
       test('No _id', function(done) {
-          chai.request(server)
-          .delete('/api/issues/test')
-          .send({
-            "_id": ""
-          })
-          .end(function(err2, res2){
-            assert.equal(res2.status, 200);
-            assert.equal(res2.result, 'xxxx');
-            done();
-          });
+        chai.request(server)
+        .delete('/api/issues/test')
+        .send({
+          "_id": ""
+        })
+        .end(function(err2, res2){
+          assert.equal(res2.status, 200);
+          assert.equal(res2.result, 'xxxx');
+          done();
+        });
       });
       
       test('Valid _id', function(done) {
