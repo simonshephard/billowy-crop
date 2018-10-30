@@ -128,6 +128,9 @@ module.exports = function (app) {
       // SET UPDATE FIELDS
       var updated_entry = req.body;
       delete updated_entry._id;
+      for (var prop in updated_entry) { if (!updated_entry[prop]) {delete updated_entry[prop];} }
+      updated_entry.updated_on = Date.now();
+
       // var numValidProperties = 0;
       // for (var property in req.body) {
       //   if (req.body[property]) {
@@ -148,7 +151,8 @@ module.exports = function (app) {
         // .update({_id: req.body._id}, {$set: req.body}) // gives all blanks
         // .update({"_id": ObjectId(req.body._id)}, {$set: req.body})
         // .update({"_id": ObjectId(req.body._id)}, {$set: {"issue_title": "newTitle1"}}) // WORKS AND UPDATES
-        .update({"_id": ObjectId(req.body._id)}, {$set: updated_entry}, (err, doc) => {
+        // .update({"_id": ObjectId(req.body._id)}, {$set: updated_entry}, (err, doc) => {
+        .findAndModify({_id:new ObjectId(issue)},[['_id',1]],{$set: updates},{new: true},function(err,doc){
         // .then(() => {
           // console.log({updated: "updated-ok"}); // WORKING
           // res.json({updated: "updated-ok"}); // WORKING
