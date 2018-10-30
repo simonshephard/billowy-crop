@@ -262,9 +262,13 @@ suite('Functional Tests', function() {
           assigned_to: 'Chai and Mocha',
           status_text: 'In QA'
         })
-        .end(function(err, res){
-          postedId = res.body.docs[0]._id;
-        chai.request(server)
+        // .end(function(err, res){
+        //   postedId = res.body.docs[0]._id;
+        // });
+        .then((res) => {
+           res.body.docs[0]._id;
+        })
+        // chai.request(server)
         .delete('/api/issues/test')
         .send({
           _id: postedId
@@ -273,7 +277,6 @@ suite('Functional Tests', function() {
           assert.equal(resDel.status, 200);
           assert.equal(resDel.body.result, 'success: deleted ' + postedId);
           done();
-        });
         });
       });
       
