@@ -111,9 +111,9 @@ module.exports = function (app) {
           
         // })
         // .then(() => {
-          const docs = [new_entry];
-          // console.log({docs: docs});
-          res.json({docs: docs});
+          const results = [new_entry];
+          // console.log({docs: results});
+          res.json({docs: results});
         });
       });
       // [{"_id":"5bd62f578be3581c2436a54e","issue_title":"a","issue_text":"b","created_by":"c","assigned_to":"","status_text":"","created_on":1540763478977,"updated_on":1540763478977,"open":true}]
@@ -144,7 +144,6 @@ module.exports = function (app) {
       updated_entry.created_by = req.body.created_by || '';      
       updated_entry.assigned_to = req.body.assigned_to || '';
       updated_entry.status_text = req.body.status_text || '';
-      updated_entry.updated_on = Date.now();
       //updated_entry.open = true;
       for (var prop in updated_entry) { if (!updated_entry[prop]) {delete updated_entry[prop];} }
       console.log({updatedEntry: updated_entry});
@@ -172,7 +171,7 @@ module.exports = function (app) {
         // .update({"_id": ObjectId(req.body._id)}, {$set: req.body})
         // .update({"_id": ObjectId(req.body._id)}, {$set: {"issue_title": "newTitle1"}}) // WORKS AND UPDATES
         // .update({"_id": ObjectId(req.body._id)}, {$set: updated_entry}, (err, doc) => {
-        .findAndModify({"_id": ObjectId(req.body._id)},[['_id',1]], {$set: updated_entry}, {new: true}, (err,doc) => {
+        .findAndModify({_id: ObjectId(req.body._id)},[['_id',1]], {$set: updated_entry}, {new: true}, (err,doc) => {
         // .then(() => {
           // console.log({updated: "updated-ok"}); // WORKING
           // res.json({updated: "updated-ok"}); // WORKING
@@ -191,7 +190,7 @@ module.exports = function (app) {
           } else if (doc) {
             updated_entry._id = req.body._id;
             const docs = [updated_entry];
-            res.json({docs: docs, result: 'successfully updated ' + updated_entry._id});
+            res.json({docs: docs, result: 'successfully updated ' + id});
           } else {
             // 'successfully updated' or 'could not update '+_id.
             res.json({update_err: 'no update', result: 'could not update ' + req.body._id});
