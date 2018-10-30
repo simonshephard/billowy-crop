@@ -152,7 +152,7 @@ module.exports = function (app) {
         // .update({"_id": ObjectId(req.body._id)}, {$set: req.body})
         // .update({"_id": ObjectId(req.body._id)}, {$set: {"issue_title": "newTitle1"}}) // WORKS AND UPDATES
         // .update({"_id": ObjectId(req.body._id)}, {$set: updated_entry}, (err, doc) => {
-        .findAndModify({_id:new ObjectId(issue)},[['_id',1]],{$set: updates},{new: true},function(err,doc){
+        .findAndModify({"_id": ObjectId(req.body._id)},[['_id',1]], {$set: updated_entry}, {new: true}, (err,doc) => {
         // .then(() => {
           // console.log({updated: "updated-ok"}); // WORKING
           // res.json({updated: "updated-ok"}); // WORKING
@@ -168,7 +168,7 @@ module.exports = function (app) {
             console.error(err);
             res.json({update_err: err, result: 'could not update ' + id});
             // return;
-          } else if (doc.nModified) {
+          } else if (doc) {
             updated_entry._id = req.body._id;
             res.json({docs: [updated_entry], result: 'successfully updated ' + updated_entry._id});
           } else {
